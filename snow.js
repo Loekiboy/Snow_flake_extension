@@ -48,7 +48,6 @@
     const size = Math.random() * 20 + 10; // 10-30px
     const startX = Math.random() * window.innerWidth;
     const speed = (Math.random() * 1 + 0.5) * settings.speed; // 0.5-1.5 * speed setting
-    const drift = Math.random() * 50 - 25; // -25 to 25px horizontal drift
     const rotationSpeed = (Math.random() * 2 - 1) * 0.5; // Very slight rotation
     
     // Synchronized drift pattern using sine wave
@@ -62,7 +61,6 @@
       y: -size,
       size: size,
       speed: speed,
-      drift: drift,
       rotation: 0,
       rotationSpeed: rotationSpeed,
       driftPhase: driftPhase,
