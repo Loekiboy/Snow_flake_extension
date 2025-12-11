@@ -214,8 +214,15 @@
         const currentDomain = window.location.hostname;
         if (!settings.disabledSites.includes(currentDomain)) {
           settings.disabledSites.push(currentDomain);
+          // Save updated settings to storage
+          if (chrome.storage) {
+            chrome.storage.sync.set({snowSettings: settings});
+          }
           stopSnow();
         }
+      } else if (request.action === 'getCurrentDomain') {
+        sendResponse({domain: window.location.hostname});
+        return true;
       }
       sendResponse({success: true});
     });

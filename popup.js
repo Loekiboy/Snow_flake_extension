@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const disableSiteBtn = document.getElementById('disableSite');
   const saveSettingsBtn = document.getElementById('saveSettings');
   const messageDiv = document.getElementById('message');
+  const disabledSitesGroup = document.getElementById('disabledSitesGroup');
+  const disabledSitesList = document.getElementById('disabledSitesList');
 
   let currentSettings = {
     enabled: true,
@@ -26,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (result.snowSettings) {
       currentSettings = result.snowSettings;
       updateUI();
+      updateDisabledSitesList();
     }
   });
 
@@ -48,6 +51,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     updateCustomImageVisibility();
+  }
+
+  // Update disabled sites list
+  function updateDisabledSitesList() {
+    if (currentSettings.disabledSites && currentSettings.disabledSites.length > 0) {
+      disabledSitesGroup.style.display = 'block';
+      disabledSitesList.innerHTML = '';
+      
+      currentSettings.disabledSites.forEach((site, index) => {
+        const siteItem = document.createElement('div');
+        siteItem.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 5px; background: rgba(0,0,0,0.2); margin: 5px 0; border-radius: 5px; font-size: 12px;';
+        
+        const siteName = document.createElement('span');
+        siteName.textContent = site;
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '✕';
+        removeBtn.style.cssText = 'background: rgba(255,255,255,0.2); border: none; color: white; cursor: pointer; padding: 2px 8px; border-radius: 3px; font-weight: bold;';
+        removeBtn.onclick = function() {
+          currentSettings.disabledSites.splice(index, 1);
+          saveSettings(false);
+          updateDisabledSitesList();
+          showMessage(`${site} verwijderd uit uitsluitingslijst`, 'success');
+        };
+        
+        siteItem.appendChild(siteName);
+        siteItem.appendChild(removeBtn);
+        disabledSitesList.appendChild(siteItem);
+      });
+    } else {
+      disabledSitesGroup.style.display = 'none';
+    }
   }
 
   // Show/hide custom image input
@@ -97,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!currentSettings.disabledSites.includes(domain)) {
           currentSettings.disabledSites.push(domain);
           saveSettings(true);
+          updateDisabledSitesList();
           
           // Send message to content script
           chrome.tabs.sendMessage(tabs[0].id, {
