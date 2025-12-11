@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snowflake Extension Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+      min-height: 100vh;
+      color: white;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+    
+    .header h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .header p {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .card p {
+      line-height: 1.8;
+      opacity: 0.9;
+    }
+    
+    .card ul {
+      margin: 15px 0;
+      padding-left: 20px;
+    }
+    
+    .card li {
+      margin: 8px 0;
+      opacity: 0.9;
+    }
+    
+    .emoji {
+      font-size: 32px;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      opacity: 0.7;
+    }
+    
+    .demo-section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      margin: 40px auto;
+      max-width: 800px;
+      border-radius: 20px;
+      text-align: center;
+    }
+    
+    .demo-section h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    
+    .settings-preview {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .floating {
+      animation: float 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="floating">
+      <h1>❄️ Snowflake Extension Demo ❄️</h1>
+    </div>
+    <p>Ervaar de magie van vallende sneeuw op elke website</p>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <h2><span class="emoji">⚡</span> Variabele Eigenschappen</h2>
+      <p>Elke sneeuwvlok is uniek met:</p>
+      <ul>
+        <li>Verschillende snelheden</li>
+        <li>Variërende groottes (10-30px)</li>
+        <li>Subtiele rotatie</li>
+        <li>Natuurlijke dwarreling</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="emoji">🎨</span> Aanpasbaar Uiterlijk</h2>
+      <p>Kies hoe je sneeuw eruitziet:</p>
+      <ul>
+        <li>❄️ Klassieke sneeuwvlokken</li>
+        <li>⚪ Eenvoudige ballen</li>
+        <li>🖼️ Je eigen afbeelding</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="emoji">⚙️</span> Volledige Controle</h2>
+      <p>Pas alles aan naar jouw wens:</p>
+      <ul>
+        <li>Snelheid: 0.5x tot 3x</li>
+        <li>Aantal: 10 tot 150 vlokken</li>
+        <li>Site-specifieke uitzonderingen</li>
+        <li>Eenvoudig in/uitschakelen</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="emoji">🚀</span> Geoptimaliseerd</h2>
+      <p>Prestaties zijn belangrijk:</p>
+      <ul>
+        <li>GPU-versnelde animaties</li>
+        <li>Minimale CPU gebruik</li>
+        <li>Geen externe dependencies</li>
+        <li>Werkt op alle websites</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="emoji">🌐</span> Universeel</h2>
+      <p>Compatibel met alle browsers:</p>
+      <ul>
+        <li>✅ Google Chrome</li>
+        <li>✅ Microsoft Edge</li>
+        <li>✅ Brave Browser</li>
+        <li>✅ Mozilla Firefox</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="emoji">🎯</span> Gebruiksvriendelijk</h2>
+      <p>Eenvoudig te gebruiken:</p>
+      <ul>
+        <li>Intuïtieve popup interface</li>
+        <li>Real-time voorvertoning</li>
+        <li>Instellingen per site</li>
+        <li>Direct effect zichtbaar</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>🎮 Probeer het Nu!</h2>
+    <p style="font-size: 18px; margin: 20px 0;">
+      Als de extensie is geïnstalleerd, zie je nu sneeuwvlokken vallen op deze pagina!
+    </p>
+    <div class="settings-preview">
+      <p><strong>💡 Tip:</strong> Klik op het sneeuwvlok icoon in je toolbar om de instellingen te openen en te experimenteren met verschillende configuraties.</p>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>📊 Enkele Voorgestelde Configuraties</h2>
+    <div style="text-align: left; margin-top: 20px;">
+      <div class="settings-preview" style="margin: 15px 0;">
+        <strong>🌨️ Subtiele Sneeuw</strong><br>
+        Snelheid: 0.8 | Aantal: 30 | Uiterlijk: Sneeuwvlok
+      </div>
+      <div class="settings-preview" style="margin: 15px 0;">
+        <strong>❄️ Klassieke Winter</strong><br>
+        Snelheid: 1.0 | Aantal: 50 | Uiterlijk: Sneeuwvlok
+      </div>
+      <div class="settings-preview" style="margin: 15px 0;">
+        <strong>🌪️ Sneeuwstorm</strong><br>
+        Snelheid: 2.5 | Aantal: 120 | Uiterlijk: Bal
+      </div>
+      <div class="settings-preview" style="margin: 15px 0;">
+        <strong>🧘 Rustgevend</strong><br>
+        Snelheid: 0.5 | Aantal: 25 | Uiterlijk: Bal
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Gemaakt met ❤️ en ❄️</p>
+    <p style="margin-top: 10px; font-size: 14px;">
+      Snowflake Extension v1.0.0 | Open Source
+    </p>
+  </div>
+</body>
+</html>
