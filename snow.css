@@ -1,0 +1,9 @@
+/* Snow flake extension styles */
+#snow-container-extension {
+  /* Container is set via inline styles for reliability */
+}
+
+.snowflake-item {
+  /* Individual snowflakes styled via inline styles for performance */
+  will-change: transform;
+}
