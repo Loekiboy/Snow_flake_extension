@@ -1,101 +1,107 @@
 # ❄️ Snow Flake Extension
 
-Een web extensie die dwarrelende sneeuwvlokken toevoegt aan webpagina's met uitgebreide aanpassingsmogelijkheden.
+A web extension that adds falling snowflakes to web pages with extensive customization options.
 
 ## ✨ Features
 
-- 🌨️ **Realistische sneeuwval** - Sneeuwvlokken met natuurlijke beweging
-- ⚡ **Variabele eigenschappen** - Elke sneeuwvlok heeft unieke:
-  - Snelheid
-  - Grootte
-  - Rotatie (minimaal)
-  - Horizontale dwarreling (gesynchroniseerd patroon)
-- 🎨 **Aanpasbaar uiterlijk**:
-  - Sneeuwvlok (standaard)
-  - Bal
-  - Eigen afbeelding (automatisch verkleind)
-- ⚙️ **Instellingen**:
-  - Snelheid aanpassen
-  - Aantal sneeuwvlokken instellen
-  - Sneeuw in-/uitschakelen
-  - Specifieke sites uitsluiten
-- 🌐 **Werkt op alle websites**
+- 🌨️ **Realistic Snowfall** - Snowflakes with natural movement
+- ⚡ **Variable Properties** - Each snowflake has unique:
+  - Speed
+  - Size
+  - Rotation (minimal)
+  - Horizontal drift (synchronized pattern)
+- 🎨 **Customizable Appearance**:
+  - Snowflake (default)
+  - Ball
+  - Custom Image (automatically resized)
+- ⚙️ **Settings**:
+  - Adjust speed
+  - Set number of snowflakes
+  - Toggle snow on/off
+  - Exclude specific sites
+  - **Accumulate Snow**: Snow piles up at the bottom of the screen!
+- 🌐 **Works on all websites**
 
-## 📦 Installatie
+## 📦 Installation
 
 ### Chrome/Edge/Brave
 
-1. Download of kloon deze repository
-2. Open Chrome en ga naar `chrome://extensions/`
-3. Schakel "Ontwikkelaarsmodus" in (rechtsboven)
-4. Klik op "Uitgepakte extensie laden"
-5. Selecteer de map met de extensie bestanden
-6. De extensie is nu geïnstalleerd! ❄️
+1. Download or clone this repository
+2. Open Chrome and go to `chrome://extensions/`
+3. Enable "Developer mode" (top right)
+4. Click on "Load unpacked"
+5. Select the folder containing the extension files
+6. The extension is now installed! ❄️
 
 ### Firefox
 
-1. Download of kloon deze repository
-2. Open Firefox en ga naar `about:debugging#/runtime/this-firefox`
-3. Klik op "Tijdelijke add-on laden"
-4. Selecteer het `manifest.json` bestand
-5. De extensie is nu geïnstalleerd! ❄️
+1. Download or clone this repository
+2. Open Firefox and go to `about:debugging#/runtime/this-firefox`
+3. Click on "Load Temporary Add-on"
+4. Select the `manifest.json` file
+5. The extension is now installed! ❄️
 
-## 🎮 Gebruik
+## 🎮 Usage
 
-1. Klik op het sneeuwvlok icoon in je browser toolbar
-2. Pas de instellingen aan naar wens:
-   - Schakel sneeuw in/uit met de toggle
-   - Pas snelheid en aantal aan met de sliders
-   - Kies je favoriete uiterlijk
-   - Voer een eigen afbeelding URL in (optioneel)
-3. Klik op "Instellingen opslaan"
-4. Gebruik "Uitschakelen op deze site" om sneeuw op specifieke sites uit te schakelen
+1. Click on the snowflake icon in your browser toolbar
+2. Adjust the settings to your liking:
+   - Toggle snow on/off
+   - Enable "Accumulate Snow" to let snow pile up
+   - Adjust speed and count with sliders
+   - Choose your favorite appearance
+   - Enter a custom image URL (optional)
+3. Click on "Save Settings"
+4. Use "Disable on this site" to turn off snow on specific sites
 
-## 🛠️ Technische details
+## 🛠️ Technical Details
 
-- **Manifest versie**: 3
-- **Compatibel met**: Chrome, Edge, Brave, Firefox
-- **Geen externe dependencies**
-- **Lightweight**: Minimale impact op prestaties
+- **Manifest Version**: 3
+- **Compatible with**: Chrome, Edge, Brave, Firefox
+- **No external dependencies**
+- **Lightweight**: Minimal impact on performance
 
-## 📝 Bestanden structuur
+## 📝 File Structure
 
 ```
 Snow_flake_extension/
-├── manifest.json          # Extensie configuratie
-├── snow.js               # Hoofdscript voor sneeuwanimatie
-├── snow.css              # Stijlen voor sneeuw
-├── popup.html            # Instellingen popup UI
-├── popup.js              # Popup logica
-├── popup.css             # Popup stijlen
+├── manifest.json          # Extension configuration
+├── snow.js               # Main script for snow animation
+├── snow.css              # Styles for snow
+├── popup.html            # Settings popup UI
+├── popup.js              # Popup logic
+├── popup.css             # Popup styles
 ├── background.js         # Service worker
-└── icons/                # Extensie iconen
+└── icons/                # Extension icons
     ├── icon16.png
     ├── icon48.png
     └── icon128.png
 ```
 
-## 🎯 Features in detail
+## 🎯 Features in Detail
 
-### Variabele snelheid
-Elke sneeuwvlok heeft een unieke valsnelheid, gecombineerd met de globale snelheidsinstelling.
+### Variable Speed
+Each snowflake has a unique falling speed, combined with the global speed setting.
 
-### Grootte variatie
-Sneeuwvlokken variëren in grootte van 10px tot 30px voor een natuurlijk effect.
+### Size Variation
+Snowflakes vary in size from 10px to 30px for a natural effect.
 
-### Minimale rotatie
-Sneeuwvlokken roteren zeer langzaam tijdens het vallen voor extra realisme.
+### Minimal Rotation
+Snowflakes rotate very slowly while falling for extra realism.
 
-### Gesynchroniseerde dwarreling
-Sneeuwvlokken dwarrelen horizontaal met een sinusvormig patroon, waarbij ze allemaal een soortgelijk ritme hebben maar met unieke fases en amplitudes.
+### Synchronized Drift
+Snowflakes drift horizontally with a sinusoidal pattern, where they all have a similar rhythm but with unique phases and amplitudes.
 
-## 🔧 Aanpassing
+### Snow Accumulation
+When enabled, snowflakes will land at the bottom of the screen and form a snow pile. They transform into small snowballs upon landing.
 
-Je kunt de standaardinstellingen aanpassen in `background.js`:
+## 🔧 Customization
+
+You can adjust the default settings in `background.js`:
 
 ```javascript
 const defaultSettings = {
   enabled: true,
+  accumulate: false,
   speed: 1,              // 0.5 - 3.0
   count: 50,             // 10 - 150
   appearance: 'snowflake', // 'snowflake', 'ball', 'custom'

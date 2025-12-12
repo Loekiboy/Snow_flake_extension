@@ -1,103 +1,106 @@
-# 🎯 Installatie Gids - Snowflake Extension
+# 🎯 Installation Guide - Snowflake Extension
 
-## 📥 Stap-voor-stap Installatie
+## 📥 Step-by-Step Installation
 
-### Voor Chrome, Edge, of Brave
+### For Chrome, Edge, or Brave
 
-1. **Download de extensie**
-   - Kloon deze repository of download als ZIP
-   - Pak de ZIP uit als je deze hebt gedownload
+1. **Download the extension**
+   - Clone this repository or download as ZIP
+   - Extract the ZIP if you downloaded it
 
-2. **Open de extensie pagina**
-   - Chrome: navigeer naar `chrome://extensions/`
-   - Edge: navigeer naar `edge://extensions/`
-   - Brave: navigeer naar `brave://extensions/`
+2. **Open the extension page**
+   - Chrome: navigate to `chrome://extensions/`
+   - Edge: navigate to `edge://extensions/`
+   - Brave: navigate to `brave://extensions/`
 
-3. **Schakel ontwikkelaarsmodus in**
-   - Klik op de toggle rechtsboven met "Ontwikkelaarsmodus" of "Developer mode"
+3. **Enable Developer Mode**
+   - Click the toggle top right saying "Developer mode"
 
-4. **Laad de extensie**
-   - Klik op "Uitgepakte extensie laden" of "Load unpacked"
-   - Navigeer naar de map met de extensie bestanden
-   - Selecteer de map en klik op "Selecteer map" of "Select folder"
+4. **Load the extension**
+   - Click on "Load unpacked"
+   - Navigate to the folder with the extension files
+   - Select the folder and click "Select folder"
 
-5. **Klaar!**
-   - De extensie verschijnt nu in je toolbar
-   - Je kunt nu op het sneeuwvlok icoon klikken om de instellingen te openen
+5. **Done!**
+   - The extension now appears in your toolbar
+   - You can now click the snowflake icon to open settings
 
-### Voor Firefox
+### For Firefox
 
-1. **Download de extensie**
-   - Kloon deze repository of download als ZIP
-   - Pak de ZIP uit als je deze hebt gedownload
+1. **Download the extension**
+   - Clone this repository or download as ZIP
+   - Extract the ZIP if you downloaded it
 
-2. **Open de debugging pagina**
-   - Navigeer naar `about:debugging#/runtime/this-firefox`
+2. **Open the debugging page**
+   - Navigate to `about:debugging#/runtime/this-firefox`
 
-3. **Laad de extensie tijdelijk**
-   - Klik op "Tijdelijke add-on laden" of "Load Temporary Add-on"
-   - Navigeer naar de map met de extensie bestanden
-   - Selecteer het `manifest.json` bestand
+3. **Load the extension temporarily**
+   - Click on "Load Temporary Add-on"
+   - Navigate to the folder with the extension files
+   - Select the `manifest.json` file
 
-4. **Let op**: In Firefox worden tijdelijk geladen extensies verwijderd wanneer je de browser sluit
+4. **Note**: In Firefox temporary extensions are removed when you close the browser
 
-5. **Voor permanente installatie**: Je moet de extensie ondertekenen via Mozilla's Add-on Developer Hub
+5. **For permanent installation**: You must sign the extension via Mozilla's Add-on Developer Hub
 
-## 🎮 Eerste Gebruik
+## 🎮 First Use
 
-Na installatie:
+After installation:
 
-1. Klik op het sneeuwvlok icoon (❄️) in je browser toolbar
-2. De instellingen popup verschijnt
-3. Sneeuw is standaard ingeschakeld - je zou direct sneeuwvlokken moeten zien vallen!
-4. Pas de instellingen aan naar wens
+1. Click the snowflake icon (❄️) in your browser toolbar
+2. The settings popup appears
+3. Snow is enabled by default - you should see snowflakes falling immediately!
+4. Adjust settings to your liking
 
-## 🔧 Instellingen Uitgelegd
+## 🔧 Settings Explained
 
-### Sneeuw inschakelen
-Toggle om sneeuw aan/uit te zetten op alle sites
+### Enable Snow
+Toggle to turn snow on/off on all sites
 
-### Snelheid (0.5 - 3.0)
-- **0.5**: Heel langzaam, rustgevend
-- **1.0**: Normaal tempo (standaard)
-- **3.0**: Snel, dramatisch effect
+### Accumulate Snow
+Toggle to let snow pile up at the bottom of the screen
 
-### Aantal sneeuwvlokken (10 - 150)
-- **10-30**: Subtiel, minimaal
-- **50**: Goed gebalanceerd (standaard)
-- **100+**: Intense sneeuwstorm
+### Speed (0.5 - 3.0)
+- **0.5**: Very slow, calming
+- **1.0**: Normal pace (default)
+- **3.0**: Fast, dramatic effect
 
-### Uiterlijk
-- **❄️ Sneeuwvlok**: Klassiek sneeuwvlok ontwerp (SVG)
-- **⚪ Bal**: Eenvoudige witte ballen met gradient
-- **🖼️ Eigen afbeelding**: Gebruik je eigen afbeelding URL
+### Snowflake Count (10 - 150)
+- **10-30**: Subtle, minimal
+- **50**: Well balanced (default)
+- **100+**: Intense snowstorm
 
-### Uitschakelen op deze site
-Voegt de huidige site toe aan de uitsluitingslijst - sneeuw wordt niet getoond
+### Appearance
+- **❄️ Snowflake**: Classic snowflake design (SVG)
+- **⚪ Ball**: Simple white balls with gradient
+- **🖼️ Custom Image**: Use your own image URL
 
-## 🐛 Problemen Oplossen
+### Disable on this site
+Adds the current site to the exclusion list - snow will not be shown
 
-### Ik zie geen sneeuwvlokken
-1. Controleer of de extensie is ingeschakeld (toggle in popup)
-2. Controleer of de huidige site niet is uitgesloten
-3. Ververs de pagina (F5)
-4. Controleer of de extensie correct is geïnstalleerd
+## 🐛 Troubleshooting
 
-### De extensie werkt niet op bepaalde paginas
-- Browser extensie paginas (chrome://extensions/) staan geen content scripts toe
-- Sommige beveiligde paginas kunnen extensies blokkeren
+### I don't see any snowflakes
+1. Check if the extension is enabled (toggle in popup)
+2. Check if the current site is not excluded
+3. Refresh the page (F5)
+4. Check if the extension is correctly installed
 
-### De instellingen worden niet opgeslagen
-- Controleer of je browser toestemming geeft voor opslag
-- Probeer de extensie opnieuw te installeren
+### The extension doesn't work on certain pages
+- Browser extension pages (chrome://extensions/) do not allow content scripts
+- Some secure pages might block extensions
 
-### Prestatie problemen
-- Verlaag het aantal sneeuwvlokken (instelling "Aantal")
-- Dit zou zeldzaam moeten zijn, de extensie is geoptimaliseerd voor prestaties
+### Settings are not saved
+- Check if your browser allows storage
+- Try reinstalling the extension
+
+### Performance issues
+- Lower the number of snowflakes (setting "Count")
+- This should be rare, the extension is optimized for performance
 
 ## 💡 Tips
 
-1. **Subtiel effect**: Gebruik 30 sneeuwvlokken op snelheid 0.8
+1. **Subtle effect**: Use 30 snowflakes at speed 0.8
 2. **Sneeuwstorm**: Gebruik 120 sneeuwvlokken op snelheid 2.5
 3. **Rustgevend**: Gebruik 40 sneeuwvlokken op snelheid 0.6 met bal uiterlijk
 4. **Feestelijk**: Gebruik eigen afbeelding met bijvoorbeeld kerstthema

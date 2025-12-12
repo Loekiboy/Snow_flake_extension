@@ -39,12 +39,6 @@ h1 {
   font-size: 14px;
 }
 
-.setting-group input[type="range"] {
-  width: calc(100% - 50px);
-  margin-right: 10px;
-  vertical-align: middle;
-}
-
 .setting-group input[type="text"] {
   width: 100%;
   padding: 8px;
@@ -61,42 +55,108 @@ h1 {
   opacity: 0.8;
 }
 
-/* Toggle switch */
-.toggle-label {
+/* Modern Switch Design */
+.switch-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  cursor: pointer;
-  user-select: none;
+  width: 100%;
 }
 
-.toggle-label input[type="checkbox"] {
-  display: none;
+.switch-label {
+  font-weight: 600;
+  font-size: 15px;
 }
 
-.toggle-slider {
+.switch {
   position: relative;
+  display: inline-block;
   width: 50px;
   height: 26px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 13px;
-  transition: background 0.3s;
-  margin-right: 10px;
 }
 
-.toggle-slider::before {
-  content: '';
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
   position: absolute;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: white;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.3s;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  transition: .4s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.toggle-label input[type="checkbox"]:checked + .toggle-slider {
-  background: #4CAF50;
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4CAF50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Improved Sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  outline: none;
+  margin: 10px 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: transform 0.1s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .toggle-label input[type="checkbox"]:checked + .toggle-slider::before {

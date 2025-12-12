@@ -1,76 +1,76 @@
-# 🚀 Snelle Start Gids
+# 🚀 Quick Start Guide
 
-## Installatie in 3 stappen
+## Installation in 3 Steps
 
 ### Chrome/Edge/Brave
-1. Open `chrome://extensions/` (of `edge://extensions/`, `brave://extensions/`)
-2. Schakel "Ontwikkelaarsmodus" in
-3. Klik "Uitgepakte extensie laden" en selecteer deze map
+1. Open `chrome://extensions/` (or `edge://extensions/`, `brave://extensions/`)
+2. Enable "Developer mode"
+3. Click "Load unpacked" and select this folder
 
 ### Firefox
 1. Open `about:debugging#/runtime/this-firefox`
-2. Klik "Tijdelijke add-on laden"
-3. Selecteer het `manifest.json` bestand
+2. Click "Load Temporary Add-on"
+3. Select the `manifest.json` file
 
-## ⚡ Snelle Tips
+## ⚡ Quick Tips
 
-### Beste Configuraties
+### Best Configurations
 
-**🌨️ Subtiele Sneeuw** (Voor lezen/werken)
-- Snelheid: 0.8
-- Aantal: 30
-- Uiterlijk: Sneeuwvlok
+**🌨️ Subtle Snow** (For reading/working)
+- Speed: 0.8
+- Count: 30
+- Appearance: Snowflake
 
-**❄️ Klassiek** (Standaard wintergevoel)
-- Snelheid: 1.0
-- Aantal: 50
-- Uiterlijk: Sneeuwvlok
+**❄️ Classic** (Default winter feel)
+- Speed: 1.0
+- Count: 50
+- Appearance: Snowflake
 
-**🌪️ Sneeuwstorm** (Dramatisch effect)
-- Snelheid: 2.5
-- Aantal: 120
-- Uiterlijk: Bal
+**🌪️ Snowstorm** (Dramatic effect)
+- Speed: 2.5
+- Count: 120
+- Appearance: Ball
 
-**🧘 Rustgevend** (Meditatief)
-- Snelheid: 0.5
-- Aantal: 25
-- Uiterlijk: Bal
+**🧘 Calming** (Meditative)
+- Speed: 0.5
+- Count: 25
+- Appearance: Ball
 
-## 🎮 Sneltoetsen voor Popup
+## 🎮 Popup Shortcuts
 
-Na installatie kun je:
-- Klik op het ❄️ icoon in de toolbar
-- Gebruik de instellingen popup om aan te passen
+After installation you can:
+- Click the ❄️ icon in the toolbar
+- Use the settings popup to adjust
 
-## ❓ Veelgestelde Vragen
+## ❓ FAQ
 
-**Q: Kan ik eigen afbeeldingen gebruiken?**
-A: Ja! Selecteer "Eigen afbeelding" en voer een URL in.
+**Q: Can I use custom images?**
+A: Yes! Select "Custom Image" and enter a URL.
 
-**Q: Hoe schakel ik sneeuw uit op een specifieke site?**
-A: Klik op "Uitschakelen op deze site" in de popup.
+**Q: How do I disable snow on a specific site?**
+A: Click "Disable on this site" in the popup.
 
-**Q: Beïnvloedt dit de prestaties?**
-A: Minimaal - de animatie is GPU-versneld en geoptimaliseerd.
+**Q: Does this affect performance?**
+A: Minimally - the animation is GPU-accelerated and optimized.
 
-**Q: Kan ik sites weer inschakelen?**
-A: Ja! In de popup zie je een lijst van uitgesloten sites met verwijder knoppen.
+**Q: Can I re-enable sites?**
+A: Yes! In the popup you see a list of excluded sites with remove buttons.
 
-**Q: Werkt het op alle websites?**
-A: Ja, behalve browser intern pagina's (chrome://, about://, etc.)
+**Q: Does it work on all websites?**
+A: Yes, except browser internal pages (chrome://, about://, etc.)
 
-## 🎨 Experimenteer!
+## 🎨 Experiment!
 
-Probeer verschillende combinaties van:
-- Snelheid: van 0.5 (traag) tot 3.0 (snel)
-- Aantal: van 10 (minimaal) tot 150 (sneeuwstorm)
-- Uiterlijken: sneeuwvlok, bal, of je eigen creatieve afbeelding
+Try different combinations of:
+- Speed: from 0.5 (slow) to 3.0 (fast)
+- Count: from 10 (minimal) to 150 (snowstorm)
+- Appearances: snowflake, ball, or your own creative image
 
-## 📱 Delen
+## 📱 Share
 
-Vind je een geweldige configuratie? Deel deze met:
-- Snelheid: X.X
-- Aantal: XX
-- Uiterlijk: [type]
+Found a great configuration? Share it with:
+- Speed: X.X
+- Count: XX
+- Appearance: [type]
 
-Veel plezier met je sneeuw! ❄️
+Have fun with your snow! ❄️

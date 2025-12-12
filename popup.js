@@ -5,9 +5,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const speedValue = document.getElementById('speedValue');
   const countSlider = document.getElementById('count');
   const countValue = document.getElementById('countValue');
+  const sizeSlider = document.getElementById('size');
+  const sizeValue = document.getElementById('sizeValue');
+  const windSlider = document.getElementById('wind');
+  const windValue = document.getElementById('windValue');
   const appearanceRadios = document.querySelectorAll('input[name="appearance"]');
   const customImageGroup = document.getElementById('customImageGroup');
   const customImageInput = document.getElementById('customImage');
+  const customImageFile = document.getElementById('customImageFile');
   const disableSiteBtn = document.getElementById('disableSite');
   const saveSettingsBtn = document.getElementById('saveSettings');
   const messageDiv = document.getElementById('message');
@@ -18,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     enabled: true,
     speed: 1,
     count: 50,
+    maxSize: 30,
+    wind: 1,
     appearance: 'snowflake',
     customImage: '',
     disabledSites: []
@@ -26,7 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Load settings
   chrome.storage.sync.get(['snowSettings'], function(result) {
     if (result.snowSettings) {
-      currentSettings = result.snowSettings;
+      // Merge with defaults to handle new settings
+      currentSettings = {...currentSettings, ...result.snowSettings};
       updateUI();
       updateDisabledSitesList();
     }
@@ -39,6 +47,16 @@ document.addEventListener('DOMContentLoaded', function() {
     speedValue.textContent = currentSettings.speed.toFixed(1);
     countSlider.value = currentSettings.count;
     countValue.textContent = currentSettings.count;
+    
+    if (sizeSlider) {
+      sizeSlider.value = currentSettings.maxSize || 30;
+      sizeValue.textContent = (currentSettings.maxSize || 30) + 'px';
+    }
+    
+    if (windSlider) {
+      windSlider.value = currentSettings.wind !== undefined ? currentSettings.wind : 1;
+      windValue.textContent = (currentSettings.wind !== undefined ? currentSettings.wind : 1).toFixed(1);
+    }
     
     appearanceRadios.forEach(radio => {
       if (radio.value === currentSettings.appearance) {
@@ -73,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
           currentSettings.disabledSites.splice(index, 1);
           saveSettings(false);
           updateDisabledSitesList();
-          showMessage(`${site} verwijderd uit uitsluitingslijst`, 'success');
+          showMessage(`${site} removed from disabled list`, 'success');
         };
         
         siteItem.appendChild(siteName);
@@ -91,6 +109,20 @@ document.addEventListener('DOMContentLoaded', function() {
     customImageGroup.style.display = selectedAppearance === 'custom' ? 'block' : 'none';
   }
 
+  // Handle file upload
+  if (customImageFile) {
+    customImageFile.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          customImageInput.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
   // Speed slider update
   speedSlider.addEventListener('input', function() {
     speedValue.textContent = parseFloat(this.value).toFixed(1);
@@ -100,6 +132,20 @@ document.addEventListener('DOMContentLoaded', function() {
   countSlider.addEventListener('input', function() {
     countValue.textContent = this.value;
   });
+
+  // Size slider update
+  if (sizeSlider) {
+    sizeSlider.addEventListener('input', function() {
+      sizeValue.textContent = this.value + 'px';
+    });
+  }
+
+  // Wind slider update
+  if (windSlider) {
+    windSlider.addEventListener('input', function() {
+      windValue.textContent = parseFloat(this.value).toFixed(1);
+    });
+  }
 
   // Appearance change
   appearanceRadios.forEach(radio => {
@@ -139,9 +185,9 @@ document.addEventListener('DOMContentLoaded', function() {
             action: 'disableSite'
           });
           
-          showMessage(`Sneeuw uitgeschakeld op ${domain}`, 'success');
+          showMessage(`Snow disabled on ${domain}`, 'success');
         } else {
-          showMessage('Deze site is al uitgeschakeld', 'error');
+          showMessage('This site is already disabled', 'error');
         }
       }
     });
@@ -151,12 +197,14 @@ document.addEventListener('DOMContentLoaded', function() {
   saveSettingsBtn.addEventListener('click', function() {
     currentSettings.speed = parseFloat(speedSlider.value);
     currentSettings.count = parseInt(countSlider.value);
+    if (sizeSlider) currentSettings.maxSize = parseInt(sizeSlider.value);
+    if (windSlider) currentSettings.wind = parseFloat(windSlider.value);
     currentSettings.appearance = document.querySelector('input[name="appearance"]:checked').value;
     currentSettings.customImage = customImageInput.value;
     
     // Validate custom image URL if selected
     if (currentSettings.appearance === 'custom' && !currentSettings.customImage) {
-      showMessage('Voer een afbeelding URL in', 'error');
+      showMessage('Please enter an image URL or upload an image', 'error');
       return;
     }
     
@@ -177,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function saveSettings(showMsg) {
     chrome.storage.sync.set({snowSettings: currentSettings}, function() {
       if (showMsg) {
-        showMessage('Instellingen opgeslagen!', 'success');
+        showMessage('Settings saved!', 'success');
       }
     });
   }

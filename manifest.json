@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Snowflake Extension",
   "version": "1.0.0",
-  "description": "Een web extensie die dwarrelende sneeuw toevoegt aan webpagina's",
+  "description": "A web extension that adds falling snow to web pages",
   "permissions": [
     "storage",
     "activeTab"
@@ -28,6 +28,12 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
+  "web_accessible_resources": [
+    {
+      "resources": ["snow_flake.svg"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "background": {
     "service_worker": "background.js"
   }

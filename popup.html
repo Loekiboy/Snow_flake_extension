@@ -1,67 +1,91 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sneeuwvlok Instellingen</title>
+  <title>Snowflake Settings</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="popup-container">
-    <h1>❄️ Sneeuwvlok Instellingen</h1>
+    <h1>❄️ Snowflake Settings</h1>
     
     <div class="setting-group">
-      <label class="toggle-label">
-        <input type="checkbox" id="enableSnow" checked>
-        <span class="toggle-slider"></span>
-        <span class="toggle-text">Sneeuw inschakelen</span>
-      </label>
+      <div class="switch-container">
+        <span class="switch-label">Enable Snow</span>
+        <label class="switch">
+          <input type="checkbox" id="enableSnow" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
     </div>
 
     <div class="setting-group">
-      <label for="speed">Snelheid:</label>
-      <input type="range" id="speed" min="0.5" max="3" step="0.1" value="1">
-      <span id="speedValue">1.0</span>
+      <label for="speed">Speed:</label>
+      <div class="slider-container">
+        <input type="range" id="speed" min="0.5" max="3" step="0.1" value="1">
+        <span id="speedValue">1.0</span>
+      </div>
     </div>
 
     <div class="setting-group">
-      <label for="count">Aantal sneeuwvlokken:</label>
-      <input type="range" id="count" min="10" max="150" step="5" value="50">
-      <span id="countValue">50</span>
+      <label for="count">Snowflake Count:</label>
+      <div class="slider-container">
+        <input type="range" id="count" min="10" max="150" step="5" value="50">
+        <span id="countValue">50</span>
+      </div>
     </div>
 
     <div class="setting-group">
-      <label>Uiterlijk:</label>
+      <label for="size">Max Size:</label>
+      <div class="slider-container">
+        <input type="range" id="size" min="10" max="50" step="1" value="30">
+        <span id="sizeValue">30px</span>
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <label for="wind">Wind Strength:</label>
+      <div class="slider-container">
+        <input type="range" id="wind" min="0" max="5" step="0.5" value="1">
+        <span id="windValue">1.0</span>
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <label>Appearance:</label>
       <div class="appearance-options">
         <label class="radio-option">
           <input type="radio" name="appearance" value="snowflake" checked>
-          <span class="radio-label">❄️ Sneeuwvlok</span>
+          <span class="radio-label">❄️ Snowflake</span>
         </label>
         <label class="radio-option">
           <input type="radio" name="appearance" value="ball">
-          <span class="radio-label">⚪ Bal</span>
+          <span class="radio-label">⚪ Ball</span>
         </label>
         <label class="radio-option">
           <input type="radio" name="appearance" value="custom">
-          <span class="radio-label">🖼️ Eigen afbeelding</span>
+          <span class="radio-label">🖼️ Custom Image</span>
         </label>
       </div>
     </div>
 
     <div class="setting-group" id="customImageGroup" style="display: none;">
-      <label for="customImage">Afbeelding URL:</label>
-      <input type="text" id="customImage" placeholder="https://voorbeeld.com/afbeelding.png">
-      <small>Let op: afbeelding wordt automatisch verkleind</small>
+      <label for="customImageFile">Upload Image:</label>
+      <input type="file" id="customImageFile" accept="image/*">
+      <small>Or use a URL:</small>
+      <input type="text" id="customImage" placeholder="https://example.com/image.png">
+      <small>Note: image will be automatically resized</small>
     </div>
 
     <div class="setting-group">
       <button id="disableSite" class="btn-secondary">
-        🚫 Uitschakelen op deze site
+        🚫 Disable on this site
       </button>
     </div>
 
     <div class="setting-group" id="disabledSitesGroup" style="display: none;">
-      <label>Uitgesloten sites:</label>
+      <label>Disabled Sites:</label>
       <div id="disabledSitesList" style="max-height: 100px; overflow-y: auto; margin-top: 10px;">
         <!-- Disabled sites will be listed here -->
       </div>
@@ -69,14 +93,14 @@
 
     <div class="setting-group">
       <button id="saveSettings" class="btn-primary">
-        💾 Instellingen opslaan
+        💾 Save Settings
       </button>
     </div>
 
     <div id="message" class="message"></div>
 
     <div class="footer">
-      <small>Sneeuwvlok Extensie v1.0.0</small>
+      <small>Snowflake Extension v1.0.0</small>
     </div>
   </div>
   <script src="popup.js"></script>

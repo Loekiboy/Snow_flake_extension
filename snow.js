@@ -9,6 +9,8 @@
     enabled: true,
     speed: 1,
     count: 50,
+    maxSize: 30,
+    wind: 1,
     appearance: 'snowflake', // 'snowflake', 'ball', 'custom'
     customImage: null,
     disabledSites: []
@@ -40,25 +42,30 @@
   }
 
   // Create a single snowflake
-  function createSnowflake() {
+  function createSnowflake(initial = false) {
     const flake = document.createElement('div');
     flake.className = 'snowflake-item';
     
     // Random properties for variety
-    const size = Math.random() * 20 + 10; // 10-30px
+    const maxSize = settings.maxSize || 30;
+    const minSize = Math.max(5, maxSize / 3);
+    const size = Math.random() * (maxSize - minSize) + minSize;
+    
     const startX = Math.random() * window.innerWidth;
+    const startY = initial ? Math.random() * window.innerHeight : -size;
     const speed = (Math.random() * 1 + 0.5) * settings.speed; // 0.5-1.5 * speed setting
     const rotationSpeed = (Math.random() * 2 - 1) * 0.5; // Very slight rotation
     
     // Synchronized drift pattern using sine wave
     const driftPhase = Math.random() * Math.PI * 2;
-    const driftAmplitude = Math.random() * 30 + 20; // 20-50px amplitude
-    const driftFrequency = Math.random() * 0.02 + 0.01; // Drift frequency
+    const windStrength = settings.wind !== undefined ? settings.wind : 1;
+    const driftAmplitude = (Math.random() * 30 + 20) * windStrength; // 20-50px amplitude * wind
+    const driftFrequency = (Math.random() * 0.02 + 0.01) * windStrength; // Drift frequency * wind
     
     const snowflakeData = {
       element: flake,
       x: startX,
-      y: -size,
+      y: startY,
       size: size,
       speed: speed,
       rotation: 0,
@@ -92,15 +99,14 @@
       `;
     } else {
       // Default snowflake SVG
-      flake.innerHTML = `
-        <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L12 22M12 2L9 5M12 2L15 5M12 22L9 19M12 22L15 19" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M5 5L19 19M5 5L7.5 7.5M5 5L7 3M19 19L16.5 16.5M19 19L21 21" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M5 19L19 5M5 19L7 21M5 19L7.5 16.5M19 5L21 3M19 5L16.5 7.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      `;
+      const svgUrl = chrome.runtime.getURL('snow_flake.svg');
       flake.style.cssText = `
         position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        background-image: url(${svgUrl});
+        background-size: contain;
+        background-repeat: no-repeat;
         opacity: ${0.6 + Math.random() * 0.4};
         filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
       `;
@@ -129,6 +135,8 @@
       flake.x = Math.random() * window.innerWidth;
       flake.time = 0;
     }
+    
+    return true; // Still active
   }
 
   // Animation loop
@@ -153,7 +161,7 @@
     // Create snowflakes
     snowflakes = [];
     for (let i = 0; i < settings.count; i++) {
-      snowflakes.push(createSnowflake());
+      snowflakes.push(createSnowflake(true));
     }
     
     // Start animation

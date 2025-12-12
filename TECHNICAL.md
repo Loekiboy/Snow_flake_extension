@@ -1,69 +1,69 @@
-# 🔧 Technische Documentatie
+# 🔧 Technical Documentation
 
-## Architectuur Overzicht
+## Architecture Overview
 
-### Bestanden Structuur
+### File Structure
 
 ```
 Snow_flake_extension/
-├── manifest.json          # Web extension configuratie (Manifest V3)
-├── background.js          # Service worker voor initialisatie
-├── snow.js               # Hoofdscript - animatie logica
-├── snow.css              # Minimale stijlen voor container
-├── popup.html            # Instellingen UI
-├── popup.js              # Popup logica en opslag beheer
-├── popup.css             # Popup stijlen
-├── demo.html             # Test/demo pagina
-├── icons/                # Extensie iconen (16, 48, 128px)
-├── README.md             # Hoofddocumentatie
-├── INSTALLATION.md       # Installatie gids
-└── QUICKSTART.md         # Snelle start gids
+├── manifest.json          # Web extension configuration (Manifest V3)
+├── background.js          # Service worker for initialization
+├── snow.js               # Main script - animation logic
+├── snow.css              # Minimal styles for container
+├── popup.html            # Settings UI
+├── popup.js              # Popup logic and storage management
+├── popup.css             # Popup styles
+├── demo.html             # Test/demo page
+├── icons/                # Extension icons (16, 48, 128px)
+├── README.md             # Main documentation
+├── INSTALLATION.md       # Installation guide
+└── QUICKSTART.md         # Quick start guide
 ```
 
-## Kernfunctionaliteit
+## Core Functionality
 
-### 1. Sneeuwvlok Animatie (snow.js)
+### 1. Snowflake Animation (snow.js)
 
-**Initialisatie:**
-- Controleert of sneeuw is ingeschakeld voor huidige site
-- Maakt container element aan met fixed positioning
-- Genereert sneeuwvlokken met unieke eigenschappen
+**Initialization:**
+- Checks if snow is enabled for current site
+- Creates container element with fixed positioning
+- Generates snowflakes with unique properties
 
-**Per Sneeuwvlok Eigenschappen:**
+**Per Snowflake Properties:**
 ```javascript
 {
-  x: random position,           // Start X positie
-  y: -size,                     // Start boven scherm
-  size: 10-30px,                // Willekeurige grootte
-  speed: 0.5-1.5 * setting,     // Variabele valsnelheid
-  rotation: 0,                  // Huidige rotatie
-  rotationSpeed: -0.5 to 0.5,   // Zeer lichte rotatie
-  driftPhase: 0-2π,             // Fase voor sine golf
-  driftAmplitude: 20-50px,      // Horizontale drift bereik
-  driftFrequency: 0.01-0.03,    // Drift snelheid
-  time: 0                       // Tijd counter
+  x: random position,           // Start X position
+  y: -size,                     // Start above screen
+  size: 10-30px,                // Random size
+  speed: 0.5-1.5 * setting,     // Variable fall speed
+  rotation: 0,                  // Current rotation
+  rotationSpeed: -0.5 to 0.5,   // Very slight rotation
+  driftPhase: 0-2π,             // Phase for sine wave
+  driftAmplitude: 20-50px,      // Horizontal drift range
+  driftFrequency: 0.01-0.03,    // Drift speed
+  time: 0                       // Time counter
 }
 ```
 
-**Animatie Loop:**
-- Gebruikt `requestAnimationFrame` voor 60fps
-- Berekent horizontale positie via: `x + sin(time * freq + phase) * amplitude`
-- Update rotatie incrementeel
-- Reset sneeuwvlok wanneer buiten scherm
+**Animation Loop:**
+- Uses `requestAnimationFrame` for 60fps
+- Calculates horizontal position via: `x + sin(time * freq + phase) * amplitude`
+- Updates rotation incrementally
+- Resets snowflake when off screen
 
-**Prestatie Optimalisatie:**
-- CSS transform voor hardware acceleratie
-- `will-change: transform` voor GPU optimalisatie
-- Geen DOM manipulatie tijdens animatie (alleen transform updates)
+**Performance Optimization:**
+- CSS transform for hardware acceleration
+- `will-change: transform` for GPU optimization
+- No DOM manipulation during animation (only transform updates)
 
-### 2. Instellingen Beheer (popup.js)
+### 2. Settings Management (popup.js)
 
-**Opslag:**
-- Gebruikt Chrome Storage Sync API
-- Instellingen synchroniseren tussen apparaten
-- Persistent opslag
+**Storage:**
+- Uses Chrome Storage Sync API
+- Settings sync between devices
+- Persistent storage
 
-**Data Structuur:**
+**Data Structure:**
 ```javascript
 {
   enabled: boolean,
@@ -76,28 +76,28 @@ Snow_flake_extension/
 ```
 
 **Real-time Updates:**
-- Stuurt berichten naar content script bij wijzigingen
-- Content script luistert naar storage changes
-- Automatische herinitialisatie bij settings update
+- Sends messages to content script on changes
+- Content script listens to storage changes
+- Automatic re-initialization on settings update
 
-### 3. Uiterlijk Opties
+### 3. Appearance Options
 
-**Sneeuwvlok (SVG):**
-- Vector grafiek voor scherpe weergave
-- 6-puntige symmetrische sneeuwvlok
-- Wit met drop-shadow voor depth
+**Snowflake (SVG):**
+- Vector graphic for sharp display
+- 6-pointed symmetrical snowflake
+- White with drop-shadow for depth
 
-**Bal:**
-- CSS radial-gradient voor 3D effect
-- Lichtpunt op 30% voor realisme
-- Box-shadow voor glow effect
+**Ball:**
+- CSS radial-gradient for 3D effect
+- Highlight at 30% for realism
+- Box-shadow for glow effect
 
 **Custom:**
-- Laadt externe afbeelding via URL
-- Background-size: contain voor behoud aspect ratio
-- Automatische rescaling naar sneeuwvlok grootte
+- Loads external image via URL
+- Background-size: contain for aspect ratio preservation
+- Automatic rescaling to snowflake size
 
-### 4. Site Exclusies
+### 4. Site Exclusions
 
 **Implementatie:**
 - Hostname check bij initialisatie
