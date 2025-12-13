@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>❄️ Snowflake Lab - Advanced Settings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      min-height: 100vh;
+      background: 
+        radial-gradient(ellipse at 10% 10%, rgba(99, 179, 237, 0.15), transparent 50%),
+        radial-gradient(ellipse at 90% 20%, rgba(159, 122, 234, 0.12), transparent 45%),
+        radial-gradient(ellipse at 50% 90%, rgba(72, 187, 120, 0.08), transparent 50%),
+        linear-gradient(135deg, #0f0c29 0%, #1a1a3e 35%, #24243e 70%, #0f0c29 100%);
+      padding: 40px 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: white;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .header h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #a8edea 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .header p {
+      color: rgba(255,255,255,0.6);
+      font-size: 16px;
+    }
+    
+    .beta-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-left: 10px;
+      vertical-align: middle;
+      color: white;
+      -webkit-text-fill-color: white;
+      position: relative;
+      cursor: default;
+    }
+
+    .beta-badge[data-tooltip]:hover {
+      cursor: help;
+    }
+
+    .beta-badge[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 10px;
+      white-space: nowrap;
+      margin-bottom: 6px;
+      z-index: 100;
+      pointer-events: none;
+      text-transform: none;
+      letter-spacing: normal;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+    }
+    
+    .card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .card-title .icon {
+      font-size: 24px;
+    }
+    
+    .setting-row {
+      margin-bottom: 20px;
+    }
+    
+    .setting-row:last-child {
+      margin-bottom: 0;
+    }
+    
+    .setting-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+    }
+    
+    .setting-value {
+      background: rgba(255,255,255,0.1);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 12px;
+      min-width: 50px;
+      text-align: center;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.15);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+      transition: transform 0.2s;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    
+    .switch-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .switch-row:last-child {
+      border-bottom: none;
+    }
+    
+    .switch-info {
+      flex: 1;
+    }
+    
+    .switch-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    
+    .switch-desc {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+    }
+    
+    .switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .switch .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.15);
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+    
+    .switch .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+    
+    .switch input:checked + .slider {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .switch input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    
+    .preset-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      color: white;
+    }
+    
+    .preset-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.25);
+      transform: scale(1.02);
+    }
+    
+    .preset-btn.active {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+      border-color: rgba(102, 126, 234, 0.5);
+    }
+    
+    .preset-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    
+    .preset-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    .preset-desc {
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+    
+    .color-picker-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .color-option {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    
+    .color-option:hover {
+      transform: scale(1.1);
+    }
+    
+    .color-option.active {
+      border-color: white;
+      box-shadow: 0 0 15px currentColor;
+    }
+    
+    .blocked-sites-list {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 12px;
+    }
+    
+    .blocked-site {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.2);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    
+    .blocked-site button {
+      background: rgba(239, 68, 68, 0.2);
+      border: none;
+      color: #ef4444;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+    
+    .blocked-site button:hover {
+      background: rgba(239, 68, 68, 0.4);
+    }
+    
+    .add-site-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    
+    .add-site-row input {
+      flex: 1;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: white;
+      font-size: 13px;
+      outline: none;
+    }
+    
+    .add-site-row input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+    
+    .add-site-row input:focus {
+      border-color: rgba(102, 126, 234, 0.5);
+    }
+    
+    .add-site-row button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    
+    .add-site-row button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+    }
+    
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+    
+    .message {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(0,0,0,0.9);
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+    
+    .message.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    
+    .message.success {
+      border-left: 4px solid #10b981;
+    }
+    
+    .message.error {
+      border-left: 4px solid #ef4444;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: rgba(255,255,255,0.4);
+      font-size: 13px;
+    }
+    
+    .appearance-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    
+    .appearance-option {
+      background: rgba(255,255,255,0.08);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 16px 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    
+    .appearance-option:hover {
+      background: rgba(255,255,255,0.12);
+    }
+    
+    .appearance-option.active {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, 0.15);
+    }
+    
+    .appearance-option .icon {
+      font-size: 32px;
+      margin-bottom: 6px;
+    }
+    
+    .appearance-option .name {
+      font-size: 11px;
+      font-weight: 500;
+    }
+    
+    .stats-row {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2px;
+    }
+    
+    .custom-image-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 12px auto;
+      overflow: hidden;
+      border: 2px dashed rgba(255,255,255,0.2);
+    }
+    
+    .custom-image-preview img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    
+    .custom-image-preview .placeholder {
+      font-size: 32px;
+      opacity: 0.3;
+    }
+    
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+    
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .file-input-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px dashed rgba(255,255,255,0.3);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .file-input-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.5);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 30px;
+      color: rgba(255,255,255,0.4);
+    }
+    
+    .empty-state .icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+    
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .text-input {
+      width: 100%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: white;
+      font-size: 13px;
+      outline: none;
+      margin-top: 6px;
+    }
+
+    .text-input:focus {
+      border-color: rgba(102, 126, 234, 0.5);
+    }
+
+    .text-input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>❄️ Snowflake Lab <span class="beta-badge">Advanced</span></h1>
+      <p>Fine-tune every aspect of your winter wonderland experience</p>
+    </div>
+    
+    <div class="grid">
+      <!-- Core Settings -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">⚙️</span>
+          Core Settings
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">Enable Snow</div>
+            <div class="switch-desc">Toggle snowfall effect globally</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="enableSnow" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">Behind Content</div>
+            <div class="switch-desc">Snow falls behind page elements</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="behindContent">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">Collect at Bottom <span class="beta-badge" style="font-size:9px;padding:2px 6px;" data-tooltip="Still buggy">BETA</span></div>
+            <div class="switch-desc">Snow accumulates at screen bottom</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="collectAtBottom">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">Accumulate on Objects <span class="beta-badge" style="font-size:9px;padding:2px 6px;" data-tooltip="Still buggy">BETA</span></div>
+            <div class="switch-desc">Snow sticks to page elements</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="accumulateOnElements">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Motion & Physics -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🌊</span>
+          Motion & Physics
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Fall Speed</span>
+            <span class="setting-value" id="speedValue">1.0</span>
+          </div>
+          <input type="range" id="speed" min="0.1" max="5" step="0.1" value="1">
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Wind Strength</span>
+            <span class="setting-value" id="windValue">1.0</span>
+          </div>
+          <input type="range" id="wind" min="0" max="5" step="0.1" value="1">
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Turbulence</span>
+            <span class="setting-value" id="turbulenceValue">0.5</span>
+          </div>
+          <input type="range" id="turbulence" min="0" max="2" step="0.1" value="0.5">
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Rotation Speed</span>
+            <span class="setting-value" id="rotationValue">1.0</span>
+          </div>
+          <input type="range" id="rotation" min="0" max="3" step="0.1" value="1">
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Sway Amount</span>
+            <span class="setting-value" id="swayValue">1.0</span>
+          </div>
+          <input type="range" id="sway" min="0" max="3" step="0.1" value="1">
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">Mouse Controls Wind <span class="beta-badge" data-tooltip="May look wierd and unnatural">BETA</span></div>
+            <div class="switch-desc">Wind follows your cursor position</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="mouseWind">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Density & Size -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">📊</span>
+          Density & Size
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Snowflake Count</span>
+            <span class="setting-value" id="countValue">50</span>
+          </div>
+          <input type="range" id="count" min="5" max="300" step="5" value="50">
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Minimum Size</span>
+            <span class="setting-value" id="minSizeValue">8px</span>
+          </div>
+          <input type="range" id="minSize" min="2" max="30" step="1" value="8">
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Maximum Size</span>
+            <span class="setting-value" id="maxSizeValue">30px</span>
+          </div>
+          <input type="range" id="size" min="10" max="80" step="1" value="30">
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Size Variation</span>
+            <span class="setting-value" id="sizeVariationValue">50%</span>
+          </div>
+          <input type="range" id="sizeVariation" min="0" max="100" step="5" value="50">
+        </div>
+        
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-value" id="statCount">50</div>
+            <div class="stat-label">Active Flakes</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="statFPS">60</div>
+            <div class="stat-label">Target FPS</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Appearance -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🎨</span>
+          Appearance
+        </div>
+        
+        <div class="appearance-grid">
+          <div class="appearance-option active" data-appearance="snowflake">
+            <div class="icon"><img src="images/snow_flake.svg" style="width: 32px; height: 32px;"></div>
+            <div class="name">Snowflake</div>
+          </div>
+          <div class="appearance-option" data-appearance="ball">
+            <div class="icon">⚪</div>
+            <div class="name">Ball</div>
+          </div>
+          <div class="appearance-option" data-appearance="star">
+            <div class="icon"><img src="images/Star.svg" style="width: 32px; height: 32px;"></div>
+            <div class="name">Star</div>
+          </div>
+          <div class="appearance-option" data-appearance="heart">
+            <div class="icon"><img src="images/Heart.svg" style="width: 32px; height: 32px;"></div>
+            <div class="name">Heart</div>
+          </div>
+          <div class="appearance-option" data-appearance="leaf">
+            <div class="icon"><img src="images/Leaf.svg" style="width: 32px; height: 32px;"></div>
+            <div class="name">Leaf</div>
+          </div>
+          <div class="appearance-option" data-appearance="custom">
+            <div class="icon">🖼️</div>
+            <div class="name">Custom</div>
+          </div>
+        </div>
+        
+        <div class="setting-row" style="margin-top: 16px;">
+          <div class="setting-label">
+            <span>Opacity</span>
+            <span class="setting-value" id="opacityValue">80%</span>
+          </div>
+          <input type="range" id="opacity" min="20" max="100" step="5" value="80">
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Blur Effect <span class="beta-badge" style="font-size:9px;padding:2px 6px;" data-tooltip="May have a weird look">BETA</span></span>
+            <span class="setting-value" id="blurValue">0px</span>
+          </div>
+          <input type="range" id="blur" min="0" max="5" step="0.5" value="0">
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Glow Intensity</span>
+            <span class="setting-value" id="glowValue">50%</span>
+          </div>
+          <input type="range" id="glow" min="0" max="100" step="5" value="50">
+        </div>
+      </div>
+      
+      <!-- Custom Image (Beta) -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🖼️</span>
+          Custom Image <span class="beta-badge" data-tooltip="Can produce low fps">BETA</span>
+        </div>
+        
+        <div class="custom-image-preview" id="customImagePreview">
+          <span class="placeholder">📷</span>
+        </div>
+        
+        <div class="file-input-wrapper">
+          <div class="file-input-btn">
+            📁 Click to upload image (max 48x48px)
+          </div>
+          <input type="file" id="customImageFile" accept="image/*">
+        </div>
+        
+        <div style="margin-top: 12px;">
+          <div class="setting-label">
+            <span>Or enter image URL:</span>
+          </div>
+          <input type="text" id="customImage" class="text-input" placeholder="https://example.com/snowflake.png">
+        </div>
+        
+        <button class="btn btn-secondary" style="width: 100%; margin-top: 12px;" id="clearCustomImage">
+          🗑️ Clear Custom Image
+        </button>
+      </div>
+      
+      <!-- Color & Theme -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🌈</span>
+          Color & Theme
+        </div>
+        
+        <div id="colorPickerSection">
+          <div class="setting-label">
+            <span>Snow Color</span>
+            <span id="colorDisabledHint" style="font-size: 11px; color: #ff9800; display: none;">(Use Rainbow Mode for Leaf/Heart/Star)</span>
+          </div>
+          <div class="color-picker-row" id="colorPickerRow">
+            <div class="color-option active" data-color="#ffffff" style="background: #ffffff;"></div>
+            <div class="color-option" data-color="#e0f7ff" style="background: #e0f7ff;"></div>
+            <div class="color-option" data-color="#b3e5fc" style="background: #b3e5fc;"></div>
+            <div class="color-option" data-color="#ffcdd2" style="background: #ffcdd2;"></div>
+            <div class="color-option" data-color="#c8e6c9" style="background: #c8e6c9;"></div>
+            <div class="color-option" data-color="#fff9c4" style="background: #fff9c4;"></div>
+            <div class="color-option" data-color="#e1bee7" style="background: #e1bee7;"></div>
+          </div>
+        </div>
+        
+        <div class="switch-row" style="margin-top: 16px;">
+          <div class="switch-info">
+            <div class="switch-title">Rainbow Mode</div>
+            <div class="switch-desc">Multicolor particles (only color option for Leaf/Heart/Star)</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="rainbowMode">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">Sparkle Effect</div>
+            <div class="switch-desc">Add twinkling sparkles</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="sparkleEffect">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">Trail Effect</div>
+            <div class="switch-desc">Leave fading trails behind</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="trailEffect">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Presets -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">✨</span>
+          Quick Presets
+        </div>
+        
+        <div class="preset-grid">
+          <button class="preset-btn" data-preset="calm">
+            <div class="preset-icon">🌨️</div>
+            <div class="preset-name">Calm</div>
+            <div class="preset-desc">Gentle & peaceful</div>
+          </button>
+          <button class="preset-btn active" data-preset="classic">
+            <div class="preset-icon">❄️</div>
+            <div class="preset-name">Classic</div>
+            <div class="preset-desc">Traditional snow</div>
+          </button>
+          <button class="preset-btn" data-preset="storm">
+            <div class="preset-icon">🌪️</div>
+            <div class="preset-name">Storm</div>
+            <div class="preset-desc">Heavy blizzard</div>
+          </button>
+          <button class="preset-btn" data-preset="romantic">
+            <div class="preset-icon">💕</div>
+            <div class="preset-name">Romantic</div>
+            <div class="preset-desc">Soft & dreamy</div>
+          </button>
+          <button class="preset-btn" data-preset="party">
+            <div class="preset-icon">🎉</div>
+            <div class="preset-name">Party</div>
+            <div class="preset-desc">Colorful & fun</div>
+          </button>
+          <button class="preset-btn" data-preset="autumn">
+            <div class="preset-icon">🍂</div>
+            <div class="preset-name">Autumn</div>
+            <div class="preset-desc">Falling leaves</div>
+          </button>
+          <button class="preset-btn" data-preset="night">
+            <div class="preset-icon">🌙</div>
+            <div class="preset-name">Night</div>
+            <div class="preset-desc">Starry night sky</div>
+          </button>
+          <button class="preset-btn" data-preset="minimal">
+            <div class="preset-icon">🔘</div>
+            <div class="preset-name">Minimal</div>
+            <div class="preset-desc">Subtle & clean</div>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Blocked Sites -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🚫</span>
+          Blocked Sites
+        </div>
+        
+        <div class="blocked-sites-list" id="disabledSitesList">
+          <div class="empty-state">
+            <div class="icon">✅</div>
+            <div>No sites blocked</div>
+          </div>
+        </div>
+        
+        <div class="add-site-row">
+          <input type="text" id="addSiteInput" placeholder="example.com">
+          <button id="addSiteBtn">+ Add</button>
+        </div>
+        
+        <button class="btn btn-danger" style="width: 100%; margin-top: 12px;" id="clearAllSites">
+          🗑️ Clear All Blocked Sites
+        </button>
+      </div>
+      
+      <!-- Advanced Performance -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">⚡</span>
+          Performance <span class="beta-badge" data-tooltip="Isn't tested">BETA</span>
+        </div>
+        
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Target FPS</span>
+            <span class="setting-value" id="fpsValue">60</span>
+          </div>
+          <input type="range" id="fps" min="15" max="120" step="5" value="60">
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">GPU Acceleration</div>
+            <div class="switch-desc">Use hardware acceleration</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="gpuAcceleration" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">Reduce on Battery</div>
+            <div class="switch-desc">Lower quality when unplugged</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="reduceOnBattery">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-row">
+          <div class="switch-info">
+            <div class="switch-title">Pause When Hidden</div>
+            <div class="switch-desc">Stop animation in background tabs</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pauseWhenHidden" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="btn btn-primary" id="saveSettings">
+        💾 Save All Settings
+      </button>
+      <button class="btn btn-secondary" id="resetSettings">
+        🔄 Reset to Defaults
+      </button>
+      <button class="btn btn-secondary" id="exportSettings">
+        📤 Export Settings
+      </button>
+      <button class="btn btn-secondary" id="importSettings">
+        📥 Import Settings
+      </button>
+    </div>
+    
+    <div class="footer">
+      <p>Snowflake Extension v1.0.0 • Made with ❄️ and ❤️</p>
+    </div>
+  </div>
+  
+  <div id="message" class="message"></div>
+  
+  <script src="advanced.js"></script>
+</body>
+</html>

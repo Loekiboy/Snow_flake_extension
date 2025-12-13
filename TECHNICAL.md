@@ -8,16 +8,16 @@
 Snow_flake_extension/
 ├── manifest.json          # Web extension configuration (Manifest V3)
 ├── background.js          # Service worker for initialization
-├── snow.js               # Main script - animation logic
-├── snow.css              # Minimal styles for container
-├── popup.html            # Settings UI
-├── popup.js              # Popup logic and storage management
-├── popup.css             # Popup styles
-├── demo.html             # Test/demo page
-├── icons/                # Extension icons (16, 48, 128px)
-├── README.md             # Main documentation
-├── INSTALLATION.md       # Installation guide
-└── QUICKSTART.md         # Quick start guide
+├── snow.js                # Main script - animation logic
+├── snow.css               # Minimal styles for container
+├── popup.html             # Settings UI
+├── popup.js               # Popup logic and storage management
+├── popup.css              # Popup styles
+├── demo.html              # Test/demo page
+├── icons/                 # Extension icons (16, 48, 128px)
+├── README.md              # Main documentation
+├── INSTALLATION.md        # Installation guide
+└── QUICKSTART.md          # Quick start guide
 ```
 
 ## Core Functionality
@@ -25,19 +25,19 @@ Snow_flake_extension/
 ### 1. Snowflake Animation (snow.js)
 
 **Initialization:**
-- Checks if snow is enabled for current site
-- Creates container element with fixed positioning
+- Checks if snow is enabled for the current site
+- Creates a fixed container (can sit in front or behind page content)
 - Generates snowflakes with unique properties
 
 **Per Snowflake Properties:**
 ```javascript
 {
   x: random position,           // Start X position
-  y: -size,                     // Start above screen
+  y: -size,                     // Start above the viewport
   size: 10-30px,                // Random size
   speed: 0.5-1.5 * setting,     // Variable fall speed
   rotation: 0,                  // Current rotation
-  rotationSpeed: -0.5 to 0.5,   // Very slight rotation
+  rotationSpeed: -0.5 to 0.5,   // Slight rotation
   driftPhase: 0-2π,             // Phase for sine wave
   driftAmplitude: 20-50px,      // Horizontal drift range
   driftFrequency: 0.01-0.03,    // Drift speed
@@ -46,22 +46,21 @@ Snow_flake_extension/
 ```
 
 **Animation Loop:**
-- Uses `requestAnimationFrame` for 60fps
-- Calculates horizontal position via: `x + sin(time * freq + phase) * amplitude`
-- Updates rotation incrementally
-- Resets snowflake when off screen
+- Uses `requestAnimationFrame` for smooth 60fps
+- Horizontal position: `x + sin(time * freq + phase) * amplitude`
+- Rotation increments each frame
+- Resets snowflake when it leaves the viewport
 
 **Performance Optimization:**
-- CSS transform for hardware acceleration
-- `will-change: transform` for GPU optimization
-- No DOM manipulation during animation (only transform updates)
+- CSS transforms for hardware acceleration
+- Minimal DOM work (only transform updates)
+- Fixed-size array of snowflakes to avoid growth
 
 ### 2. Settings Management (popup.js)
 
 **Storage:**
-- Uses Chrome Storage Sync API
-- Settings sync between devices
-- Persistent storage
+- Uses `chrome.storage.local` (persistent, not synced)
+- Single object under `snowSettings`
 
 **Data Structure:**
 ```javascript
@@ -69,134 +68,116 @@ Snow_flake_extension/
   enabled: boolean,
   speed: 0.5-3.0,
   count: 10-150,
-  appearance: 'snowflake' | 'ball' | 'custom',
-  customImage: string (URL),
-  disabledSites: string[]
+  maxSize: 10-50,
+  appearance: 'snowflake' | 'ball',
+  disabledSites: string[],
+  behindContent: boolean
 }
 ```
 
 **Real-time Updates:**
-- Sends messages to content script on changes
-- Content script listens to storage changes
-- Automatic re-initialization on settings update
+- Popup sends `updateSettings` or `toggleSnow` messages
+- Content script listens to storage changes and messages
+- Re-initializes snow with latest settings
 
 ### 3. Appearance Options
 
 **Snowflake (SVG):**
-- Vector graphic for sharp display
-- 6-pointed symmetrical snowflake
-- White with drop-shadow for depth
+- Bundled vector for crisp rendering
+- White with subtle drop shadow
 
 **Ball:**
-- CSS radial-gradient for 3D effect
-- Highlight at 30% for realism
-- Box-shadow for glow effect
-
-**Custom:**
-- Loads external image via URL
-- Background-size: contain for aspect ratio preservation
-- Automatic rescaling to snowflake size
+- CSS radial-gradient for a soft, round flake
+- Glow via box-shadow
 
 ### 4. Site Exclusions
 
-**Implementatie:**
-- Hostname check bij initialisatie
-- Disabled sites lijst in storage
-- UI voor beheer van lijst met verwijder functie
+**Behavior:**
+- Hostname is checked before showing snow
+- Disabled sites stored in `snowSettings.disabledSites`
+- Popup UI lets users add/remove current site
 
 **Flow:**
-1. User klikt "Uitschakelen op deze site"
-2. Huidige hostname wordt toegevoegd aan lijst
-3. Settings worden opgeslagen
-4. Content script stopt animatie
-5. Bij volgende bezoek wordt sneeuw niet geladen
+1. User clicks “Disable on this site”
+2. Hostname is added to the list and saved
+3. Content script stops snow on that domain
+4. On future visits, snow will not start
 
-## Browser Compatibiliteit
+## Browser Compatibility
 
 ### Manifest V3
-- **Chrome**: ✅ Volledig ondersteund (88+)
-- **Edge**: ✅ Volledig ondersteund (88+)
-- **Brave**: ✅ Volledig ondersteund
-- **Firefox**: ✅ Ondersteund (109+)
+- **Chrome**: ✅ Supported (88+)
+- **Edge**: ✅ Supported (88+)
+- **Brave**: ✅ Supported
+- **Firefox**: ✅ Supported (109+)
 
-### API Gebruik
-- `chrome.storage.sync`: Settings opslag
-- `chrome.runtime.onMessage`: Inter-script communicatie
-- `chrome.tabs`: Active tab detectie
-- RequestAnimationFrame: Animatie loop
+### API Usage
+- `chrome.storage.local`: Settings storage
+- `chrome.runtime.onMessage`: Communication between popup/content
+- `chrome.tabs`: Active tab detection
+- `requestAnimationFrame`: Animation loop
 
-## Prestatie Overwegingen
+## Performance Considerations
 
-### CPU/GPU Gebruik
-- **Transform-based animatie**: GPU versneld
-- **No reflow/repaint**: Alleen transform wijzigt
-- **RequestAnimationFrame**: Sync met display refresh
+### CPU/GPU
+- Transform-based animation (GPU-friendly)
+- No layout thrashing; only transforms change
+- Frame scheduling via `requestAnimationFrame`
 
-### Geheugen
-- Vaste array van sneeuwvlokken (geen groei)
-- Hergebruik van DOM elementen (reset ipv recreate)
-- Minimale event listeners
+### Memory
+- Fixed pool of snowflake objects
+- DOM nodes are reused (reset instead of recreate)
+- Minimal listeners
 
-### Netwerk
-- Geen externe requests (behalve custom images)
-- Icons embedded in extensie
-- Geen analytics of tracking
+### Network
+- No external requests
+- All assets bundled (icons, SVG)
 
-## Uitbreidingsmogelijkheden
+## Extension Points
 
-### Mogelijke Toevoegingen
-1. **Meer vormen**: Sterren, harten, etc.
-2. **Seizoenen**: Bladeren in herfst, bloemen in lente
-3. **Interactiviteit**: Klikbare sneeuwvlokken
-4. **Geluidseffecten**: Optionele winter geluiden
-5. **Per-site instellingen**: Verschillende settings per site
-6. **Keyboard shortcuts**: Snelle toggle via toetsenbord
-7. **Context menu**: Rechter-klik opties
-
-### Extensie Punten
-- `snow.js`: Nieuwe vormen in `createSnowflake()`
-- `popup.html`: Nieuwe UI controls
-- `manifest.json`: Nieuwe permissions of commands
+- `snow.js`: Add new appearances in `createSnowflake()`
+- `popup.html`: Add new controls
+- `manifest.json`: Extend permissions/commands if needed
 
 ## Debugging
 
-### Console Logs
-Content script draait in page context:
+### Console
 ```javascript
-// Open DevTools Console
 console.log(document.getElementById('snow-container-extension'));
 ```
 
 ### Storage Inspect
 ```javascript
-chrome.storage.sync.get(['snowSettings'], console.log);
+chrome.storage.local.get(['snowSettings'], console.log);
 ```
 
-### Performance Monitor
+### Performance Probe
 ```javascript
-// In snow.js, add:
+// In snow.js
 let frameCount = 0;
 let lastTime = performance.now();
-// In animate():
-frameCount++;
-if (performance.now() - lastTime > 1000) {
-  console.log('FPS:', frameCount);
-  frameCount = 0;
-  lastTime = performance.now();
+function logFps() {
+  frameCount++;
+  const now = performance.now();
+  if (now - lastTime > 1000) {
+    console.log('FPS:', frameCount);
+    frameCount = 0;
+    lastTime = now;
+  }
 }
+// Call logFps() inside animate()
 ```
 
-## Best Practices Gebruikt
+## Best Practices Used
 
-1. ✅ **Closure pattern** voor scope isolatie
-2. ✅ **RequestAnimationFrame** voor smooth animatie
-3. ✅ **CSS transforms** voor performance
-4. ✅ **Storage API** voor persistentie
-5. ✅ **Message passing** voor communicatie
-6. ✅ **Defensive coding** voor browser compatibility
-7. ✅ **No external dependencies** voor security
+1. ✅ IIFE/closure for scope isolation
+2. ✅ `requestAnimationFrame` for smooth animation
+3. ✅ CSS transforms for performance
+4. ✅ Storage API for persistence
+5. ✅ Message passing between popup and content
+6. ✅ No external dependencies
 
-## Licentie & Credits
+## License & Credits
 
-Open source - vrij te gebruiken en aanpassen
-Geen external libraries gebruikt - pure JavaScript/CSS
+Open source — free to use and modify.
+Pure JavaScript/CSS; no external libraries.

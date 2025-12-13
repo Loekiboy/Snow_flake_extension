@@ -7,31 +7,28 @@ document.addEventListener('DOMContentLoaded', function() {
   const countValue = document.getElementById('countValue');
   const sizeSlider = document.getElementById('size');
   const sizeValue = document.getElementById('sizeValue');
-  const windSlider = document.getElementById('wind');
-  const windValue = document.getElementById('windValue');
   const appearanceRadios = document.querySelectorAll('input[name="appearance"]');
-  const customImageGroup = document.getElementById('customImageGroup');
-  const customImageInput = document.getElementById('customImage');
-  const customImageFile = document.getElementById('customImageFile');
   const disableSiteBtn = document.getElementById('disableSite');
   const saveSettingsBtn = document.getElementById('saveSettings');
   const messageDiv = document.getElementById('message');
   const disabledSitesGroup = document.getElementById('disabledSitesGroup');
   const disabledSitesList = document.getElementById('disabledSitesList');
+  const behindContentToggle = document.getElementById('behindContent');
+  const advancedSettingsBtn = document.getElementById('advancedSettings');
+  const presetButtons = document.querySelectorAll('[data-preset]');
 
   let currentSettings = {
     enabled: true,
     speed: 1,
     count: 50,
     maxSize: 30,
-    wind: 1,
     appearance: 'snowflake',
-    customImage: '',
-    disabledSites: []
+    disabledSites: [],
+    behindContent: false
   };
 
   // Load settings
-  chrome.storage.sync.get(['snowSettings'], function(result) {
+  chrome.storage.local.get(['snowSettings'], function(result) {
     if (result.snowSettings) {
       // Merge with defaults to handle new settings
       currentSettings = {...currentSettings, ...result.snowSettings};
@@ -53,22 +50,79 @@ document.addEventListener('DOMContentLoaded', function() {
       sizeValue.textContent = (currentSettings.maxSize || 30) + 'px';
     }
     
-    if (windSlider) {
-      windSlider.value = currentSettings.wind !== undefined ? currentSettings.wind : 1;
-      windValue.textContent = (currentSettings.wind !== undefined ? currentSettings.wind : 1).toFixed(1);
-    }
+    const appearanceOther = document.getElementById('appearanceOther');
+    let matchFound = false;
     
     appearanceRadios.forEach(radio => {
       if (radio.value === currentSettings.appearance) {
         radio.checked = true;
+        matchFound = true;
       }
     });
     
-    if (currentSettings.customImage) {
-      customImageInput.value = currentSettings.customImage;
+    if (appearanceOther) {
+      if (!matchFound) {
+        appearanceRadios.forEach(r => r.checked = false);
+        appearanceOther.style.display = 'block';
+      } else {
+        appearanceOther.style.display = 'none';
+      }
     }
     
-    updateCustomImageVisibility();
+    if (behindContentToggle) {
+      behindContentToggle.checked = currentSettings.behindContent || false;
+    }
+  }
+
+  // Helper: apply preset values and persist
+  function applyPreset(preset) {
+    if (!preset) return;
+
+    if (preset.speed !== undefined) {
+      currentSettings.speed = preset.speed;
+      if (speedSlider) {
+        speedSlider.value = preset.speed;
+        speedValue.textContent = preset.speed.toFixed(1);
+      }
+    }
+
+    if (preset.count !== undefined) {
+      currentSettings.count = preset.count;
+      if (countSlider) {
+        countSlider.value = preset.count;
+        countValue.textContent = preset.count;
+      }
+    }
+
+    if (preset.maxSize !== undefined && sizeSlider) {
+      currentSettings.maxSize = preset.maxSize;
+      sizeSlider.value = preset.maxSize;
+      sizeValue.textContent = preset.maxSize + 'px';
+    }
+
+    if (preset.appearance && appearanceRadios.length) {
+      currentSettings.appearance = preset.appearance;
+      appearanceRadios.forEach(r => { r.checked = r.value === preset.appearance; });
+    }
+
+    if (behindContentToggle && typeof preset.behindContent === 'boolean') {
+      currentSettings.behindContent = preset.behindContent;
+      behindContentToggle.checked = preset.behindContent;
+    }
+    
+    // Always set rainbowMode from preset (default to false if not specified)
+    currentSettings.rainbowMode = preset.rainbowMode === true;
+
+    saveSettings(true);
+
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      if (tabs[0]) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          action: 'updateSettings',
+          settings: currentSettings
+        });
+      }
+    });
   }
 
   // Update disabled sites list
@@ -103,26 +157,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Show/hide custom image input
-  function updateCustomImageVisibility() {
-    const selectedAppearance = document.querySelector('input[name="appearance"]:checked').value;
-    customImageGroup.style.display = selectedAppearance === 'custom' ? 'block' : 'none';
-  }
-
-  // Handle file upload
-  if (customImageFile) {
-    customImageFile.addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          customImageInput.value = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  }
-
   // Speed slider update
   speedSlider.addEventListener('input', function() {
     speedValue.textContent = parseFloat(this.value).toFixed(1);
@@ -140,17 +174,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Wind slider update
-  if (windSlider) {
-    windSlider.addEventListener('input', function() {
-      windValue.textContent = parseFloat(this.value).toFixed(1);
+  // Behind content toggle
+  if (behindContentToggle) {
+    behindContentToggle.addEventListener('change', function() {
+      currentSettings.behindContent = this.checked;
+      saveSettings(false);
+      
+      // Send message to content script
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        if (tabs[0]) {
+          chrome.tabs.sendMessage(tabs[0].id, {
+            action: 'updateSettings',
+            settings: currentSettings
+          });
+        }
+      });
     });
   }
-
-  // Appearance change
-  appearanceRadios.forEach(radio => {
-    radio.addEventListener('change', updateCustomImageVisibility);
-  });
 
   // Enable/disable snow toggle
   enableSnow.addEventListener('change', function() {
@@ -169,10 +209,21 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Disable site button
-  disableSiteBtn.addEventListener('click', function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      if (tabs[0]) {
-        const url = new URL(tabs[0].url);
+  if (disableSiteBtn) {
+    disableSiteBtn.addEventListener('click', function() {
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        const activeTab = tabs && tabs[0];
+        if (!activeTab || !activeTab.url) {
+          showMessage('No active site found.', 'error');
+          return;
+        }
+
+        const url = new URL(activeTab.url);
+        if (url.protocol === 'chrome-extension:') {
+          showMessage('Open the popup on a website to disable it.', 'error');
+          return;
+        }
+
         const domain = url.hostname;
         
         if (!currentSettings.disabledSites.includes(domain)) {
@@ -181,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
           updateDisabledSitesList();
           
           // Send message to content script
-          chrome.tabs.sendMessage(tabs[0].id, {
+          chrome.tabs.sendMessage(activeTab.id, {
             action: 'disableSite'
           });
           
@@ -189,24 +240,16 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
           showMessage('This site is already disabled', 'error');
         }
-      }
+      });
     });
-  });
+  }
 
   // Save settings button
   saveSettingsBtn.addEventListener('click', function() {
     currentSettings.speed = parseFloat(speedSlider.value);
     currentSettings.count = parseInt(countSlider.value);
     if (sizeSlider) currentSettings.maxSize = parseInt(sizeSlider.value);
-    if (windSlider) currentSettings.wind = parseFloat(windSlider.value);
     currentSettings.appearance = document.querySelector('input[name="appearance"]:checked').value;
-    currentSettings.customImage = customImageInput.value;
-    
-    // Validate custom image URL if selected
-    if (currentSettings.appearance === 'custom' && !currentSettings.customImage) {
-      showMessage('Please enter an image URL or upload an image', 'error');
-      return;
-    }
     
     saveSettings(true);
     
@@ -221,9 +264,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  // Advanced settings button -> open full-page advanced.html
+  if (advancedSettingsBtn) {
+    advancedSettingsBtn.addEventListener('click', function() {
+      const url = chrome.runtime.getURL('advanced.html');
+      chrome.tabs.create({ url });
+    });
+  }
+
+  // Preset buttons (available on advanced page)
+  if (presetButtons && presetButtons.length) {
+    presetButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const preset = this.getAttribute('data-preset');
+        const presets = {
+          calm: { speed: 0.8, count: 30, maxSize: 24, appearance: 'snowflake', behindContent: true, rainbowMode: false },
+          classic: { speed: 1.0, count: 50, maxSize: 30, appearance: 'snowflake', behindContent: false, rainbowMode: false },
+          storm: { speed: 2.2, count: 120, maxSize: 32, appearance: 'ball', behindContent: false, rainbowMode: false }
+        };
+        applyPreset(presets[preset]);
+      });
+    });
+  }
+
+  // Add event listeners to radio buttons to hide "Other" message when clicked
+  appearanceRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      const appearanceOther = document.getElementById('appearanceOther');
+      if (appearanceOther) appearanceOther.style.display = 'none';
+    });
+  });
+
   // Save settings to storage
   function saveSettings(showMsg) {
-    chrome.storage.sync.set({snowSettings: currentSettings}, function() {
+    chrome.storage.local.set({snowSettings: currentSettings}, function() {
       if (showMsg) {
         showMessage('Settings saved!', 'success');
       }

@@ -13,6 +13,9 @@ A web extension that adds falling snowflakes to web pages with extensive customi
 - 🎨 **Customizable Appearance**:
   - Snowflake (default)
   - Ball
+  - Star
+  - Heart
+  - Leaf
   - Custom Image (automatically resized)
 - ⚙️ **Settings**:
   - Adjust speed
@@ -20,14 +23,26 @@ A web extension that adds falling snowflakes to web pages with extensive customi
   - Toggle snow on/off
   - Exclude specific sites
   - **Accumulate Snow**: Snow piles up at the bottom of the screen!
+  - **Accumulate on Objects**: Snow sticks to page elements!
 - 🌐 **Works on all websites**
+
+## 🧪 Beta Features
+
+The following features are currently in Beta. They are experimental and may be refined in future updates:
+
+- **Collect at Bottom**: Allows snow to pile up at the bottom of the screen. (Still buggy)
+- **Accumulate on Objects**: Allows snow to stick to elements on the page. (Still buggy)
+- **Mouse Controls Wind**: Wind direction follows your mouse cursor.
+- **Blur Effect**: Adds a blur filter to snowflakes. (May have a weird look)
+- **Custom Image**: Use your own image. (Can produce low fps)
+- **Performance Settings**: Advanced FPS and battery controls. (Isn't tested)
 
 ## 📦 Installation
 
-### Chrome/Edge/Brave
+### Chrome/Edge/Brave/Opera
 
 1. Download or clone this repository
-2. Open Chrome and go to `chrome://extensions/`
+2. Open `chrome://extensions/`, `edge://extensions/` or `brave://extensions/` (`chrome://extensions/` also works for Opera)
 3. Enable "Developer mode" (top right)
 4. Click on "Load unpacked"
 5. Select the folder containing the extension files
@@ -93,6 +108,9 @@ Snowflakes drift horizontally with a sinusoidal pattern, where they all have a s
 
 ### Snow Accumulation
 When enabled, snowflakes will land at the bottom of the screen and form a snow pile. They transform into small snowballs upon landing.
+
+### Accumulate on Objects (Beta)
+Snowflakes can stick to elements on the page, such as navigation bars, images, and text blocks. This uses smart collision detection to create a realistic accumulation effect on the page content itself.
 
 ## 🔧 Customization
 

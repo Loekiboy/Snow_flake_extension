@@ -30,7 +30,12 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["snow_flake.svg"],
+      "resources": [
+        "images/Heart.svg",
+        "images/Leaf.svg",
+        "images/Star.svg",
+        "images/snow_flake.svg"
+      ],
       "matches": ["<all_urls>"]
     }
   ],

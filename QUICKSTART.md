@@ -2,8 +2,8 @@
 
 ## Installation in 3 Steps
 
-### Chrome/Edge/Brave
-1. Open `chrome://extensions/` (or `edge://extensions/`, `brave://extensions/`)
+### Chrome/Edge/Brave/Opera
+1. Open `chrome://extensions/`, `edge://extensions/` or `brave://extensions/` (`chrome://extensions/` also works for Opera)
 2. Enable "Developer mode"
 3. Click "Load unpacked" and select this folder
 
