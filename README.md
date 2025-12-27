@@ -90,6 +90,11 @@ Snow_flake_extension/
     ├── icon16.png
     ├── icon48.png
     └── icon128.png
+└── images/                # images
+    ├── heart.svg
+    ├── snow.svg
+    ├── star.svg
+    └── leaf.svg
 ```
 
 ## 🎯 Features in Detail
@@ -128,14 +133,14 @@ const defaultSettings = {
 };
 ```
 
-## 📄 Licentie
+## 📄 License
 
-Dit project is open source en vrij te gebruiken en aan te passen.
+This project is open source and free to use and modify.
 
-## 🤝 Bijdragen
+## 🤝 Contributions
 
-Bijdragen zijn welkom! Voel je vrij om issues te openen of pull requests te maken.
+Contributions are welcome! Feel free to open issues or create pull requests.
 
 ## ❤️ Credits
 
-Gemaakt met ❄️ voor een betere winterbeleving op het web!
+Made with ❄️ for a better winter experience on the web!
