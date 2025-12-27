@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Snowflake Extension Demo</title>
+  <title>Snowflake Extension Demo - Interactieve Preview</title>
+  <link rel="icon" type="image/svg+xml" href="images/snow_flake.svg">
   <style>
     * {
       margin: 0;
@@ -118,6 +119,89 @@
     .floating {
       animation: float 3s ease-in-out infinite;
     }
+
+    /* Demo Controls Styling */
+    .demo-controls {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      border-radius: 15px;
+      margin: 20px 0;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .demo-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .control-group {
+      margin: 15px 0;
+      text-align: left;
+    }
+
+    .control-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .control-group input[type="range"] {
+      width: 100%;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+
+    .control-group select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .control-group select option {
+      background: #2a5298;
+      color: white;
+    }
+
+    .value-display {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .checkbox-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .checkbox-control input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+
+    .checkbox-control label {
+      margin: 0 !important;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -126,6 +210,67 @@
       <h1>❄️ Snowflake Extension Demo ❄️</h1>
     </div>
     <p>Experience the magic of falling snow on any website</p>
+    <div style="margin-top: 20px;">
+      <span class="demo-badge">🎮 LIVE INTERACTIEVE DEMO</span>
+    </div>
+    
+
+
+  <div class="demo-section">
+    <h2>🎮 Try It Live!</h2>
+    <p style="font-size: 18px; margin: 20px 0;">
+      This page shows a <strong>live preview</strong> of the snowflake extension. 
+      Adjust the settings below to see the effect in real-time!
+    </p>
+    
+    <div class="demo-controls">
+      <span class="demo-badge">⚙️ DEMO SETTINGS</span>
+      
+      <div class="control-group">
+        <label>Speed: <span class="value-display" id="speedDisplay">1.0x</span></label>
+        <input type="range" id="speedSlider" min="0.5" max="3" step="0.1" value="1">
+      </div>
+
+      <div class="control-group">
+        <label>Flake Count: <span class="value-display" id="countDisplay">50</span></label>
+        <input type="range" id="countSlider" min="10" max="150" step="5" value="50">
+      </div>
+
+      <div class="control-group">
+        <label>Max Size: <span class="value-display" id="sizeDisplay">30px</span></label>
+        <input type="range" id="sizeSlider" min="15" max="50" step="5" value="30">
+      </div>
+
+      <div class="control-group">
+        <label>Appearance:</label>
+        <select id="appearanceSelect">
+          <option value="snowflake">❄️ Snowflake</option>
+          <option value="ball">⚪ Ball</option>
+          <option value="heart">❤️ Heart</option>
+          <option value="star">⭐ Star</option>
+          <option value="leaf">🍃 Leaf</option>
+        </select>
+      </div>
+
+      <div class="checkbox-control">
+        <input type="checkbox" id="behindToggle">
+        <label for="behindToggle">Place behind content (less intrusive)</label>
+      </div>
+
+      <div class="checkbox-control">
+        <input type="checkbox" id="rainbowToggle">
+        <label for="rainbowToggle">🌈 Rainbow colors</label>
+      </div>
+
+      <div class="checkbox-control">
+        <input type="checkbox" id="sparkleToggle">
+        <label for="sparkleToggle">✨ Sparkle effect</label>
+      </div>
+
+      <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+        <p><strong>💡 Note:</strong> This is a demo environment. The real extension has even more settings like wind, rotation, blur, glow effects and more!</p>
+      </div>
+    </div>
   </div>
 
   <div class="content">
@@ -134,7 +279,7 @@
       <p>Each snowflake is unique with:</p>
       <ul>
         <li>Different speeds</li>
-        <li>Varying sizes (10-30px)</li>
+        <li>Varying sizes (8-50px)</li>
         <li>Subtle rotation</li>
         <li>Natural drifting</li>
       </ul>
@@ -146,6 +291,9 @@
       <ul>
         <li>❄️ Classic snowflakes</li>
         <li>⚪ Simple balls</li>
+        <li>❤️ Hearts</li>
+        <li>⭐ Stars</li>
+        <li>🍃 Leaves</li>
       </ul>
     </div>
 
@@ -180,6 +328,7 @@
         <li>✅ Microsoft Edge</li>
         <li>✅ Brave Browser</li>
         <li>✅ Mozilla Firefox</li>
+        <li>✅ Opera</li>
       </ul>
     </div>
 
@@ -195,34 +344,19 @@
     </div>
   </div>
 
-  <div class="demo-section">
-    <h2>🎮 Try It Now!</h2>
-    <p style="font-size: 18px; margin: 20px 0;">
-      If the extension is installed, you'll see snowflakes falling on this page right now!
-    </p>
-    <div class="settings-preview">
-      <p><strong>💡 Tip:</strong> Click on the snowflake icon in your toolbar to open the settings and experiment with different configurations.</p>
-    </div>
-  </div>
-
-  <div class="demo-section">
-    <h2>📊 Suggested Configurations</h2>
-    <div style="text-align: left; margin-top: 20px;">
-      <div class="settings-preview" style="margin: 15px 0;">
-        <strong>🌨️ Subtle Snow</strong><br>
-        Speed: 0.8 | Count: 30 | Appearance: Snowflake
-      </div>
-      <div class="settings-preview" style="margin: 15px 0;">
-        <strong>❄️ Classic Winter</strong><br>
-        Speed: 1.0 | Count: 50 | Appearance: Snowflake
-      </div>
-      <div class="settings-preview" style="margin: 15px 0;">
-        <strong>🌪️ Snowstorm</strong><br>
-        Speed: 2.5 | Count: 120 | Appearance: Ball
-      </div>
-      <div class="settings-preview" style="margin: 15px 0;">
-        <strong>🧘 Relaxing</strong><br>
-        Speed: 0.5 | Count: 25 | Appearance: Ball
+      <!-- Download & Install Section -->
+    <div style="margin-top: 30px; text-align: center;">
+      <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 25px; border-radius: 15px; border: 2px solid rgba(255, 255, 255, 0.3); display: inline-block;">
+        <h3 style="margin-bottom: 15px; font-size: 24px;">🚀 Ready to Use It?</h3>
+        <p style="margin-bottom: 20px; opacity: 0.9;">Download and install the Snowflake Extension from GitHub</p>
+        <a href="https://github.com/Loekiboy/Snow_flake_extension" 
+           target="_blank" 
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: transform 0.3s; align-items: center; gap: 10px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          Download from GitHub
+        </a>
       </div>
     </div>
   </div>
@@ -230,8 +364,512 @@
   <div class="footer">
     <p>Made with ❤️ and ❄️</p>
     <p style="margin-top: 10px; font-size: 14px;">
-      Snowflake Extension v1.0.0 | Open Source
+      Snowflake Extension | Open Source
     </p>
   </div>
+
+  <!-- Snow Effect Script - Exact copy of extension logic -->
+  <script>
+    // Demo page snow effect - IDENTICAL to snow.js extension code
+    (function() {
+      'use strict';
+
+      let snowContainer = null;
+      let snowflakes = [];
+      let animationFrame = null;
+      let globalWind = 0;
+      let windTarget = 0;
+      let windChangeTimer = 0;
+      let lastFrameTime = 0;
+      let targetFrameTime = 1000 / 60;
+
+      // Settings matching extension defaults exactly
+      let settings = {
+        enabled: true,
+        speed: 1,
+        count: 50,
+        maxSize: 30,
+        minSize: 8,
+        sizeVariation: 50,
+        appearance: 'snowflake',
+        behindContent: false,
+        wind: 1,
+        turbulence: 0.5,
+        rotation: 1,
+        sway: 1,
+        opacity: 80,
+        blur: 0,
+        glow: 50,
+        color: '#ffffff',
+        rainbowMode: false,
+        sparkleEffect: false,
+        trailEffect: false,
+        fps: 60,
+        gpuAcceleration: true
+      };
+
+      // Rainbow color palette - exact from extension
+      const rainbowColors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#1dd1a1', '#ff7675', '#74b9ff', '#a29bfe', '#fd79a8', '#00cec9', '#e17055', '#fdcb6e'];
+
+      // Check if shape uses SVG images (leaf, heart, star)
+      function isSvgShape(shape) {
+        return shape === 'leaf' || shape === 'heart' || shape === 'star';
+      }
+
+      // Get snowflake color based on settings and shape - exact from extension
+      function getSnowflakeColor(shape) {
+        if (settings.rainbowMode === true) {
+          return rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
+        }
+        if (isSvgShape(shape)) {
+          return null;
+        }
+        if (settings.color && settings.color !== '#ffffff' && settings.color !== '') {
+          return settings.color;
+        }
+        return '#ffffff';
+      }
+
+      // Get hue rotation for rainbow effect
+      function getRandomHueRotation() {
+        return Math.floor(Math.random() * 360);
+      }
+
+      // Create snowflake container - exact from extension
+      function createContainer() {
+        if (snowContainer) return;
+        
+        const zIndex = settings.behindContent ? '-1' : '999999';
+        
+        snowContainer = document.createElement('div');
+        snowContainer.id = 'demo-snow-container';
+        snowContainer.style.cssText = `
+          position: fixed;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: ${zIndex};
+          overflow: hidden;
+          ${settings.gpuAcceleration ? 'transform: translateZ(0); will-change: transform;' : ''}
+        `;
+
+        if (settings.behindContent) {
+          document.body.prepend(snowContainer);
+        } else {
+          document.body.appendChild(snowContainer);
+        }
+      }
+
+      // Adjust color brightness - exact from extension
+      function adjustColor(color, amount) {
+        if (!color || color === '#ffffff') return amount < 0 ? '#e0e0e0' : '#ffffff';
+        try {
+          const hex = color.replace('#', '');
+          const r = Math.max(0, Math.min(255, parseInt(hex.substr(0, 2), 16) + amount));
+          const g = Math.max(0, Math.min(255, parseInt(hex.substr(2, 2), 16) + amount));
+          const b = Math.max(0, Math.min(255, parseInt(hex.substr(4, 2), 16) + amount));
+          return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        } catch (e) {
+          return color;
+        }
+      }
+
+      // Create a single snowflake - EXACT from extension
+      function createSnowflake(initial = false) {
+        const flake = document.createElement('div');
+        flake.className = 'snowflake-item';
+        
+        // Size range from settings - exact calculation
+        const maxSize = settings.maxSize || 30;
+        const minSize = settings.minSize || 8;
+        const sizeRange = (maxSize - minSize) * (settings.sizeVariation / 100);
+        const size = minSize + Math.random() * sizeRange;
+        
+        const startX = Math.random() * window.innerWidth;
+        const startY = initial ? Math.random() * window.innerHeight : -size;
+        
+        // Speed based on settings - exact calculation
+        const baseSpeed = (Math.random() * 0.5 + 0.75) * settings.speed;
+        
+        // Rotation speed from settings - exact calculation
+        const rotationSpeed = (Math.random() * 2 - 1) * 0.5 * settings.rotation;
+        
+        // Sway (drift) parameters - exact calculation
+        const swayFactor = settings.sway || 1;
+        const driftPhase = Math.random() * Math.PI * 2;
+        const driftAmplitude = (Math.random() * 30 + 20) * swayFactor * settings.turbulence;
+        const driftFrequency = (Math.random() * 0.02 + 0.01);
+        
+        // Opacity from settings - exact calculation
+        const opacityBase = (settings.opacity || 80) / 100;
+        const opacity = opacityBase * (0.7 + Math.random() * 0.3);
+        
+        const shape = settings.appearance;
+        const color = getSnowflakeColor(shape);
+
+        const snowflakeData = {
+          element: flake,
+          x: startX,
+          y: startY,
+          size: size,
+          speed: baseSpeed,
+          rotation: Math.random() * 360,
+          rotationSpeed: rotationSpeed,
+          driftPhase: driftPhase,
+          driftAmplitude: driftAmplitude,
+          driftFrequency: driftFrequency,
+          time: Math.random() * 1000,
+          color: color,
+          opacity: opacity,
+          sparklePhase: Math.random() * Math.PI * 2,
+          shape: shape,
+          hueRotation: settings.rainbowMode ? getRandomHueRotation() : 0
+        };
+        
+        // Build filter string for visual effects - exact from extension
+        let filters = [];
+        if (settings.blur > 0) {
+          filters.push(`blur(${settings.blur}px)`);
+        }
+        const glowAmount = (settings.glow || 50) / 100;
+        
+        // GPU acceleration style
+        const gpuStyle = settings.gpuAcceleration ? 'will-change: transform;' : '';
+        
+        // Set appearance based on settings - exact from extension
+        if (shape === 'ball') {
+          if (glowAmount > 0) {
+            filters.push(`drop-shadow(0 0 ${glowAmount * 8}px ${color})`);
+          }
+          const filterString = filters.length > 0 ? filters.join(' ') : '';
+          flake.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            background: radial-gradient(circle at 30% 30%, ${color}, ${adjustColor(color, -30)});
+            border-radius: 50%;
+            opacity: ${opacity};
+            box-shadow: 0 0 ${size/3}px ${color}50;
+            ${filterString ? `filter: ${filterString};` : ''}
+            ${gpuStyle}
+          `;
+        } else if (shape === 'star') {
+          const svgUrl = 'images/Star.svg';
+          if (settings.rainbowMode) {
+            filters.push(`hue-rotate(${snowflakeData.hueRotation}deg)`);
+            filters.push(`saturate(1.5)`);
+          }
+          if (glowAmount > 0) {
+            filters.push(`drop-shadow(0 0 ${glowAmount * 6}px #ffff00)`);
+          }
+          const filterString = filters.length > 0 ? filters.join(' ') : '';
+          flake.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            background-image: url(${svgUrl});
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: ${opacity};
+            ${filterString ? `filter: ${filterString};` : ''}
+            ${gpuStyle}
+          `;
+        } else if (shape === 'heart') {
+          const svgUrl = 'images/Heart.svg';
+          if (settings.rainbowMode) {
+            filters.push(`hue-rotate(${snowflakeData.hueRotation}deg)`);
+            filters.push(`saturate(1.5)`);
+          }
+          if (glowAmount > 0) {
+            filters.push(`drop-shadow(0 0 ${glowAmount * 6}px #ff0000)`);
+          }
+          const filterString = filters.length > 0 ? filters.join(' ') : '';
+          flake.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            background-image: url(${svgUrl});
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: ${opacity};
+            ${filterString ? `filter: ${filterString};` : ''}
+            ${gpuStyle}
+          `;
+        } else if (shape === 'leaf') {
+          const svgUrl = 'images/Leaf.svg';
+          if (settings.rainbowMode) {
+            filters.push(`hue-rotate(${snowflakeData.hueRotation}deg)`);
+            filters.push(`saturate(1.5)`);
+          }
+          if (glowAmount > 0) {
+            filters.push(`drop-shadow(0 0 ${glowAmount * 6}px #d82900)`);
+          }
+          const filterString = filters.length > 0 ? filters.join(' ') : '';
+          flake.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            background-image: url(${svgUrl});
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: ${opacity};
+            ${filterString ? `filter: ${filterString};` : ''}
+            ${gpuStyle}
+          `;
+        } else {
+          // Default snowflake
+          const svgUrl = 'images/snow_flake.svg';
+          if (glowAmount > 0) {
+            filters.push(`drop-shadow(0 0 ${glowAmount * 6}px ${color})`);
+          }
+          const filterString = filters.length > 0 ? filters.join(' ') : `drop-shadow(0 0 2px ${color}80)`;
+          flake.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            background-image: url(${svgUrl});
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: ${opacity};
+            filter: ${filterString};
+            ${gpuStyle}
+          `;
+        }
+        
+        snowContainer.appendChild(flake);
+        return snowflakeData;
+      }
+
+      // Create trail element - exact from extension
+      function createTrail(x, y, size, color) {
+        if (!settings.trailEffect || !snowContainer) return;
+        
+        const trail = document.createElement('div');
+        trail.style.cssText = `
+          position: absolute;
+          left: ${x}px;
+          top: ${y}px;
+          width: ${size * 0.5}px;
+          height: ${size * 0.5}px;
+          background: ${color};
+          border-radius: 50%;
+          opacity: 0.3;
+          pointer-events: none;
+          transition: opacity 0.5s ease-out;
+        `;
+        
+        snowContainer.appendChild(trail);
+        
+        setTimeout(() => {
+          trail.style.opacity = '0';
+          setTimeout(() => trail.remove(), 500);
+        }, 100);
+      }
+
+      // Update wind effect - exact from extension
+      function updateWind() {
+        const windStrength = settings.wind || 1;
+        if (windStrength <= 0) {
+          globalWind = 0;
+          return;
+        }
+        
+        windChangeTimer++;
+        
+        // Change wind direction periodically
+        if (windChangeTimer > 150 + Math.random() * 100) {
+          windTarget = (Math.random() - 0.5) * windStrength * 2;
+          windChangeTimer = 0;
+        }
+        
+        // Smooth wind transition
+        globalWind += (windTarget - globalWind) * 0.02;
+      }
+
+      // Update snowflake position - EXACT from extension
+      function updateSnowflake(flake) {
+        flake.time += 1;
+        
+        // Apply speed/gravity
+        flake.y += flake.speed;
+        
+        // Apply rotation
+        flake.rotation += flake.rotationSpeed;
+        
+        // Apply wind
+        flake.x += globalWind * (flake.size / 25);
+        
+        // Sway/drift using sine wave - exact calculation
+        const driftOffset = Math.sin(flake.time * flake.driftFrequency + flake.driftPhase) * flake.driftAmplitude;
+        const currentX = flake.x + driftOffset;
+        
+        // Sparkle effect - exact from extension
+        let currentOpacity = flake.opacity;
+        if (settings.sparkleEffect) {
+          flake.sparklePhase += 0.1;
+          currentOpacity = flake.opacity * (0.7 + 0.3 * Math.sin(flake.sparklePhase));
+          flake.element.style.opacity = currentOpacity;
+        }
+        
+        // Trail effect - exact from extension
+        if (settings.trailEffect && flake.time % 8 === 0) {
+          createTrail(currentX, flake.y, flake.size, flake.color);
+        }
+        
+        // Apply transform - exact from extension with scale
+        const scale = 0.6 + (flake.size / (settings.maxSize || 30)) * 0.4;
+        flake.element.style.transform = `translate3d(${currentX}px, ${flake.y}px, 0) rotate(${flake.rotation}deg) scale(${scale})`;
+        
+        // Reset when off screen (bottom)
+        if (flake.y > window.innerHeight + flake.size) {
+          flake.y = -flake.size;
+          flake.x = Math.random() * window.innerWidth;
+          flake.time = 0;
+          
+          // Update color only if rainbow mode is on
+          if (settings.rainbowMode === true) {
+            flake.color = getSnowflakeColor(flake.shape);
+          }
+        }
+        
+        // Wrap horizontally when pushed off screen - exact from extension
+        if (currentX > window.innerWidth + 100) {
+          flake.x = -flake.driftAmplitude - 100;
+        } else if (currentX < -100) {
+          flake.x = window.innerWidth + flake.driftAmplitude + 100;
+        }
+      }
+
+      // Animation loop with FPS control - exact from extension
+      function animate(currentTime) {
+        const elapsed = currentTime - lastFrameTime;
+        
+        if (elapsed >= targetFrameTime) {
+          lastFrameTime = currentTime - (elapsed % targetFrameTime);
+          
+          updateWind();
+          snowflakes.forEach(updateSnowflake);
+        }
+        
+        animationFrame = requestAnimationFrame(animate);
+      }
+
+      // Initialize snow - exact from extension
+      function initSnow() {
+        if (snowContainer) {
+          stopSnow();
+        }
+        
+        // Set target FPS
+        targetFrameTime = 1000 / (settings.fps || 60);
+        
+        createContainer();
+        
+        // Create snowflakes
+        snowflakes = [];
+        const count = Math.min(settings.count || 50, 300);
+        for (let i = 0; i < count; i++) {
+          snowflakes.push(createSnowflake(true));
+        }
+        
+        // Start animation
+        lastFrameTime = performance.now();
+        animate(lastFrameTime);
+      }
+
+      // Stop snow
+      function stopSnow() {
+        if (animationFrame) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = null;
+        }
+        
+        if (snowContainer) {
+          snowContainer.remove();
+          snowContainer = null;
+        }
+        
+        snowflakes = [];
+      }
+
+      // Update z-index for behind content toggle
+      function updateZIndex() {
+        if (snowContainer) {
+          const zIndex = settings.behindContent ? '-1' : '999999';
+          snowContainer.style.zIndex = zIndex;
+          
+          // Also reposition in DOM if needed
+          if (settings.behindContent && snowContainer.parentNode !== document.body.firstChild) {
+            document.body.prepend(snowContainer);
+          } else if (!settings.behindContent && snowContainer !== document.body.lastChild) {
+            document.body.appendChild(snowContainer);
+          }
+        }
+      }
+
+      // Event listeners for controls
+      document.getElementById('speedSlider').addEventListener('input', function(e) {
+        settings.speed = parseFloat(e.target.value);
+        document.getElementById('speedDisplay').textContent = settings.speed.toFixed(1) + 'x';
+      });
+
+      document.getElementById('countSlider').addEventListener('input', function(e) {
+        settings.count = parseInt(e.target.value);
+        document.getElementById('countDisplay').textContent = settings.count;
+        
+        // Add or remove snowflakes dynamically
+        while (snowflakes.length < settings.count) {
+          snowflakes.push(createSnowflake(true));
+        }
+        while (snowflakes.length > settings.count) {
+          const removed = snowflakes.pop();
+          removed.element.remove();
+        }
+      });
+
+      document.getElementById('sizeSlider').addEventListener('input', function(e) {
+        settings.maxSize = parseInt(e.target.value);
+        document.getElementById('sizeDisplay').textContent = settings.maxSize + 'px';
+        // Full restart for size changes
+        initSnow();
+      });
+
+      document.getElementById('appearanceSelect').addEventListener('change', function(e) {
+        settings.appearance = e.target.value;
+        initSnow();
+      });
+
+      document.getElementById('behindToggle').addEventListener('change', function(e) {
+        settings.behindContent = e.target.checked;
+        updateZIndex();
+      });
+
+      document.getElementById('rainbowToggle').addEventListener('change', function(e) {
+        settings.rainbowMode = e.target.checked;
+        initSnow();
+      });
+
+      document.getElementById('sparkleToggle').addEventListener('change', function(e) {
+        settings.sparkleEffect = e.target.checked;
+      });
+
+      // Initialize snow effect when page loads
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSnow);
+      } else {
+        initSnow();
+      }
+
+      // Handle window resize with debounce - exact from extension
+      let resizeTimeout;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          initSnow();
+        }, 300);
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>
