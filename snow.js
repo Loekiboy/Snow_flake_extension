@@ -54,6 +54,29 @@
   // Rainbow color palette - used for rainbow mode
   const rainbowColors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#1dd1a1', '#ff7675', '#74b9ff', '#a29bfe', '#fd79a8', '#00cec9', '#e17055', '#fdcb6e'];
 
+  // Hardcoded blocked domains - easy to modify list
+  const BLOCKED_DOMAINS = [
+    'github.com',
+    'slack.com',
+    'supabase.com',
+    'tweakers.net',
+    'quizlet.com',
+    'marktplaats.nl',
+    'makerworld.com',
+    'hackaday.io'
+  ];
+
+  function isUrlBlocked() {
+    try {
+      const hostname = window.location.hostname;
+      return BLOCKED_DOMAINS.some(domain => {
+        return hostname === domain || hostname.endsWith('.' + domain);
+      });
+    } catch (e) {
+      return false;
+    }
+  }
+
   // Check if snow should be enabled on current site
   function isEnabledOnCurrentSite() {
     const currentDomain = window.location.hostname;
@@ -723,6 +746,11 @@
           
           // Ensure rainbowMode is explicitly boolean
           settings.rainbowMode = result.snowSettings.rainbowMode === true;
+          
+          // Force disable behindContent if site is blocked
+          if (isUrlBlocked()) {
+            settings.behindContent = false;
+          }
         }
         initSnow();
       });
@@ -740,6 +768,12 @@
         Object.assign(settings, newSettings);
         // Ensure rainbowMode is explicitly boolean
         settings.rainbowMode = newSettings.rainbowMode === true;
+        
+        // Force disable behindContent if site is blocked
+        if (isUrlBlocked()) {
+          settings.behindContent = false;
+        }
+        
         initSnow();
       }
     });

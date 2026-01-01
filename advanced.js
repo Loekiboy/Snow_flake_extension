@@ -243,6 +243,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Auto-save function
+  function autoSave() {
+    // Update custom image URL if entered
+    if (customImageInput.value && customImageInput.value.startsWith('http')) {
+      currentSettings.customImage = customImageInput.value;
+    }
+    
+    chrome.storage.local.set({snowSettings: currentSettings}, function() {
+      // Silent save, no message
+      
+      // Notify any open tabs
+      chrome.tabs.query({}, function(tabs) {
+        tabs.forEach(tab => {
+          chrome.tabs.sendMessage(tab.id, {
+            action: 'updateSettings',
+            settings: currentSettings
+          }).catch(() => {});
+        });
+      });
+    });
+  }
+
   // Slider event listeners
   const sliders = [
     { el: speedSlider, val: speedValue, key: 'speed', suffix: '', decimals: 1 },
@@ -266,6 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
       val.textContent = v + suffix;
       currentSettings[key] = parseFloat(this.value);
       if (updateStat) updateStat.textContent = this.value;
+      autoSave();
     });
   });
 
@@ -287,6 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
   toggles.forEach(({ el, key }) => {
     el.addEventListener('change', function() {
       currentSettings[key] = this.checked;
+      autoSave();
     });
   });
 
@@ -297,6 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
       this.classList.add('active');
       currentSettings.appearance = this.dataset.appearance;
       updateColorPickerState();
+      autoSave();
     });
   });
 
@@ -306,6 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
       colorOptions.forEach(o => o.classList.remove('active'));
       this.classList.add('active');
       currentSettings.color = this.dataset.color;
+      autoSave();
     });
   });
 
@@ -343,6 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
           currentSettings.customImage = resizedDataUrl;
           customImagePreview.innerHTML = `<img src="${resizedDataUrl}" alt="Custom">`;
           showMessage('Image uploaded & resized!', 'success');
+          autoSave();
         };
         img.src = e.target.result;
       };
@@ -356,6 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
     customImageInput.value = '';
     customImagePreview.innerHTML = '<span class="placeholder">📷</span>';
     showMessage('Custom image cleared', 'success');
+    autoSave();
   });
 
   // Preset definitions - each preset explicitly sets rainbowMode
@@ -381,6 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
         presetButtons.forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         showMessage(`${presetName.charAt(0).toUpperCase() + presetName.slice(1)} preset applied!`, 'success');
+        autoSave();
       }
     });
   });
@@ -393,6 +422,7 @@ document.addEventListener('DOMContentLoaded', function() {
       addSiteInput.value = '';
       updateDisabledSitesList();
       showMessage(`${site} added to blocked list`, 'success');
+      autoSave();
     }
   });
 
@@ -406,30 +436,14 @@ document.addEventListener('DOMContentLoaded', function() {
       currentSettings.disabledSites = [];
       updateDisabledSitesList();
       showMessage('All blocked sites cleared', 'success');
+      autoSave();
     }
   });
 
-  // Save settings
-  saveSettingsBtn.addEventListener('click', function() {
-    // Update custom image URL if entered
-    if (customImageInput.value && customImageInput.value.startsWith('http')) {
-      currentSettings.customImage = customImageInput.value;
-    }
-    
-    chrome.storage.local.set({snowSettings: currentSettings}, function() {
-      showMessage('All settings saved!', 'success');
-      
-      // Notify any open tabs
-      chrome.tabs.query({}, function(tabs) {
-        tabs.forEach(tab => {
-          chrome.tabs.sendMessage(tab.id, {
-            action: 'updateSettings',
-            settings: currentSettings
-          }).catch(() => {});
-        });
-      });
-    });
-  });
+  // Save settings button - hidden but kept for compatibility
+  if (saveSettingsBtn) {
+    saveSettingsBtn.style.display = 'none';
+  }
 
   // Reset settings
   resetSettingsBtn.addEventListener('click', function() {

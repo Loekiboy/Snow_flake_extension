@@ -17,6 +17,31 @@ document.addEventListener('DOMContentLoaded', function() {
   const advancedSettingsBtn = document.getElementById('advancedSettings');
   const presetButtons = document.querySelectorAll('[data-preset]');
 
+  // Hardcoded blocked domains - easy to modify list
+  const BLOCKED_DOMAINS = [
+    'github.com',
+    'slack.com',
+    'supabase.com',
+    'tweakers.net',
+    'quizlet.com',
+    'marktplaats.nl',
+    'makerworld.com',
+    'hackaday.io'
+  ];
+
+  function isUrlBlocked(url) {
+    try {
+      const urlObj = new URL(url);
+      const hostname = urlObj.hostname;
+      
+      return BLOCKED_DOMAINS.some(domain => {
+        return hostname === domain || hostname.endsWith('.' + domain);
+      });
+    } catch (e) {
+      return false;
+    }
+  }
+
   let currentSettings = {
     enabled: true,
     speed: 1,
@@ -34,6 +59,27 @@ document.addEventListener('DOMContentLoaded', function() {
       currentSettings = {...currentSettings, ...result.snowSettings};
       updateUI();
       updateDisabledSitesList();
+      
+      // Check if current site is blocked and update UI accordingly
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        if (tabs[0] && tabs[0].url && isUrlBlocked(tabs[0].url)) {
+          if (behindContentToggle) {
+            behindContentToggle.checked = false;
+            behindContentToggle.disabled = true;
+            
+            // Find the container to append message
+            const container = behindContentToggle.closest('.setting-group');
+            if (container) {
+              const msg = document.createElement('div');
+              msg.style.color = '#ff6b6b';
+              msg.style.fontSize = '11px';
+              msg.style.marginTop = '4px';
+              msg.textContent = "Doesn't work on this site";
+              container.appendChild(msg);
+            }
+          }
+        }
+      });
     }
   });
 
@@ -157,30 +203,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Speed slider update
-  speedSlider.addEventListener('input', function() {
-    speedValue.textContent = parseFloat(this.value).toFixed(1);
-  });
-
-  // Count slider update
-  countSlider.addEventListener('input', function() {
-    countValue.textContent = this.value;
-  });
-
-  // Size slider update
-  if (sizeSlider) {
-    sizeSlider.addEventListener('input', function() {
-      sizeValue.textContent = this.value + 'px';
-    });
-  }
-
-  // Behind content toggle
-  if (behindContentToggle) {
-    behindContentToggle.addEventListener('change', function() {
-      currentSettings.behindContent = this.checked;
-      saveSettings(false);
+  // Save settings to storage
+  function saveSettings(showMsg) {
+    chrome.storage.local.set({snowSettings: currentSettings}, function() {
+      if (showMsg) {
+        showMessage('Settings saved!', 'success');
+      }
       
-      // Send message to content script
+      // Always update content script on save
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         if (tabs[0]) {
           chrome.tabs.sendMessage(tabs[0].id, {
@@ -189,6 +219,57 @@ document.addEventListener('DOMContentLoaded', function() {
           });
         }
       });
+    });
+  }
+
+  // Auto-save function
+  function autoSave() {
+    currentSettings.speed = parseFloat(speedSlider.value);
+    currentSettings.count = parseInt(countSlider.value);
+    if (sizeSlider) currentSettings.maxSize = parseInt(sizeSlider.value);
+    
+    const checkedAppearance = document.querySelector('input[name="appearance"]:checked');
+    if (checkedAppearance) {
+      currentSettings.appearance = checkedAppearance.value;
+    }
+    
+    saveSettings(false);
+  }
+
+  // Speed slider update
+  speedSlider.addEventListener('input', function() {
+    speedValue.textContent = parseFloat(this.value).toFixed(1);
+    autoSave();
+  });
+
+  // Count slider update
+  countSlider.addEventListener('input', function() {
+    countValue.textContent = this.value;
+    autoSave();
+  });
+
+  // Size slider update
+  if (sizeSlider) {
+    sizeSlider.addEventListener('input', function() {
+      sizeValue.textContent = this.value + 'px';
+      autoSave();
+    });
+  }
+
+  // Appearance radio update
+  appearanceRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      const appearanceOther = document.getElementById('appearanceOther');
+      if (appearanceOther) appearanceOther.style.display = 'none';
+      autoSave();
+    });
+  });
+
+  // Behind content toggle
+  if (behindContentToggle) {
+    behindContentToggle.addEventListener('change', function() {
+      currentSettings.behindContent = this.checked;
+      saveSettings(false);
     });
   }
 
@@ -244,64 +325,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Save settings button
-  saveSettingsBtn.addEventListener('click', function() {
-    currentSettings.speed = parseFloat(speedSlider.value);
-    currentSettings.count = parseInt(countSlider.value);
-    if (sizeSlider) currentSettings.maxSize = parseInt(sizeSlider.value);
-    currentSettings.appearance = document.querySelector('input[name="appearance"]:checked').value;
-    
-    saveSettings(true);
-    
-    // Send message to content script to update
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      if (tabs[0]) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          action: 'updateSettings',
-          settings: currentSettings
-        });
-      }
-    });
-  });
-
-  // Advanced settings button -> open full-page advanced.html
-  if (advancedSettingsBtn) {
-    advancedSettingsBtn.addEventListener('click', function() {
-      const url = chrome.runtime.getURL('advanced.html');
-      chrome.tabs.create({ url });
-    });
-  }
-
-  // Preset buttons (available on advanced page)
-  if (presetButtons && presetButtons.length) {
-    presetButtons.forEach(btn => {
-      btn.addEventListener('click', function() {
-        const preset = this.getAttribute('data-preset');
-        const presets = {
-          calm: { speed: 0.8, count: 30, maxSize: 24, appearance: 'snowflake', behindContent: true, rainbowMode: false },
-          classic: { speed: 1.0, count: 50, maxSize: 30, appearance: 'snowflake', behindContent: false, rainbowMode: false },
-          storm: { speed: 2.2, count: 120, maxSize: 32, appearance: 'ball', behindContent: false, rainbowMode: false }
-        };
-        applyPreset(presets[preset]);
-      });
-    });
-  }
-
-  // Add event listeners to radio buttons to hide "Other" message when clicked
-  appearanceRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-      const appearanceOther = document.getElementById('appearanceOther');
-      if (appearanceOther) appearanceOther.style.display = 'none';
-    });
-  });
-
-  // Save settings to storage
-  function saveSettings(showMsg) {
-    chrome.storage.local.set({snowSettings: currentSettings}, function() {
-      if (showMsg) {
-        showMessage('Settings saved!', 'success');
-      }
-    });
+  // Save settings button - hidden but kept for compatibility if needed, 
+  // though we can just remove the listener or make it do nothing extra.
+  if (saveSettingsBtn) {
+    saveSettingsBtn.style.display = 'none'; // Hide the button
   }
 
   // Show message
