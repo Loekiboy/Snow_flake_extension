@@ -331,6 +331,14 @@ document.addEventListener('DOMContentLoaded', function() {
     saveSettingsBtn.style.display = 'none'; // Hide the button
   }
 
+  // Advanced settings button
+  if (advancedSettingsBtn) {
+    advancedSettingsBtn.addEventListener('click', function() {
+      const advancedUrl = chrome.runtime.getURL('advanced.html');
+      chrome.tabs.create({ url: advancedUrl });
+    });
+  }
+
   // Show message
   function showMessage(text, type) {
     messageDiv.textContent = text;
